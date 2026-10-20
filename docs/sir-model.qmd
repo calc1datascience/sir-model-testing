@@ -1,6 +1,8 @@
 ---
 title: "SIR model: from BASIC to Python"
 format: live-html
+resources:
+  - pyodide/
 ---
 
 This page runs the SIR (susceptible, infected, recovered) program from the BASIC

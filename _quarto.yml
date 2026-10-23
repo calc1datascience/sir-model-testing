@@ -1,0 +1,24 @@
+project:
+  type: website
+  output-dir: docs
+  resources:
+    - .nojekyll
+    - pyodide/
+
+website:
+  title: "SIR Models: from BASIC to Python"
+  navbar:
+    left:
+      - href: index.qmd
+        text: All apps
+
+format:
+  html:
+    theme: default
+    css: styles.css
+
+filters:
+  - _app-nav.lua
+
+comments:
+  hypothesis: true

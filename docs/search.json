@@ -1,0 +1,51 @@
+[
+  {
+    "objectID": "apps/02-sir-value.html",
+    "href": "apps/02-sir-value.html",
+    "title": "SIRVALUE: from BASIC to Python",
+    "section": "",
+    "text": "← PreviousSIR model: from BASIC to PythonAll appsNext →Graphing S: from BASIC to Python\nThis page runs the SIRVALUE program from the BASIC listing below (see page 65), rewritten in Python. The Python runs right here in your browser, and the table shows whatever the program prints. Edit the code and press Run to update it; Reset brings back the original program.\nThe model is the same as before: susceptible people become infected at a rate of a × S × I, and infected people recover at a rate of b × I, with a = 0.00001 and b = 1 / 14. What’s new is the goal. Instead of printing a value every day, SIRVALUE estimates S, I and R at a single later time, tfinal = 1. It gets there by splitting the interval from tinitial to tfinal into numberofsteps = 10 equal steps, so deltat = (1 - 0) / 10 = 0.1, and taking one Euler step for each."
+  },
+  {
+    "objectID": "apps/02-sir-value.html#notes-from-the-textbook",
+    "href": "apps/02-sir-value.html#notes-from-the-textbook",
+    "title": "SIRVALUE: from BASIC to Python",
+    "section": "Notes from the textbook",
+    "text": "Notes from the textbook\n\nAdd notes here.\n\n\n\n\n\n\nNoteOriginal BASIC program (SIRVALUE.BAS)\n\n\n\n\n\n 1  DEFDBL A-Z\n 2  tinitial = 0\n 3  tfinal = 1\n 4  t = tinitial\n 5  S = 45400\n 6  I = 2100\n 7  R = 2500\n 8  numberofsteps = 10\n 9  deltat = (tfinal - tinitial) / numberofsteps\n10  FOR k = 1 TO numberofsteps\n11          Sprime = -.00001 * S * I\n12          Iprime = .00001 * S * I - I / 14\n13          Rprime = I / 14\n14          deltaS = Sprime * deltat\n15          deltaI = Iprime * deltat\n16          deltaR = Rprime * deltat\n17          t = t + deltat\n18          S = S + deltaS\n19          I = I + deltaI\n20          R = R + deltaR\n21  NEXT k\n22  PRINT t, S, I, R\n\n\n\n\n\n\n  \n    Output table\n    Each print(...) of numbers becomes a row.\n    \n      Loading Python. The first run takes a few seconds.\n    \n    \n    \n  \n\n  \n    Python code\n    Press Run (or Ctrl/⌘ + Enter) to update the table. Press Esc, then Tab, to leave the editor.\n    \n      Run\n      Reset\n       Run as I type\n      Loading Python…\n    \n    \n    \n      \n      \n        \n          \n          \n        \n      \n    \n  \n\n\n\n\n\n← PreviousSIR model: from BASIC to PythonAll appsNext →Graphing S: from BASIC to Python"
+  },
+  {
+    "objectID": "apps/03-sir-plot.html",
+    "href": "apps/03-sir-plot.html",
+    "title": "Graphing S: from BASIC to Python",
+    "section": "",
+    "text": "← PreviousSIRVALUE: from BASIC to PythonAll apps\nThis page runs a BASIC program that graphs S, the number of susceptible people, over three days. The program is rewritten in Python and runs right here in your browser. Edit the code and press Run to redraw the graph; Reset brings back the original program.\nThe calculation is the same Euler’s method as in SIRVALUE, now with tfinal = 3 and numberofsteps = 30, so deltat = 0.1. The new part is the drawing. On each pass through the loop, LINE (t, S)-(t + deltat, S + deltaS) draws a straight segment from the current point to the next one, and together the 30 segments form a piecewise-linear approximation to the graph of S. WINDOW (0, 40000)-(3, 45400) sets the coordinates of the screen, so t runs from 0 to 3 across and S runs from 40,000 to 45,400 up. (SCREEN 12 just switches the computer into graphics mode.)\nIn the Python, window(...) and line(...) do the same jobs as WINDOW and LINE. Try setting numberofsteps to 3 to see the individual segments, or to 300 for a smoother curve."
+  },
+  {
+    "objectID": "apps/03-sir-plot.html#notes-from-the-textbook",
+    "href": "apps/03-sir-plot.html#notes-from-the-textbook",
+    "title": "Graphing S: from BASIC to Python",
+    "section": "Notes from the textbook",
+    "text": "Notes from the textbook\n\nAdd notes here.\n\n\n\n\n\n\nNoteOriginal BASIC program\n\n\n\n\n\n 1  DEFDBL A-Z\n 2  SCREEN 12\n 3  WINDOW (0, 40000)-(3, 45400)\n 4  tinitial = 0\n 5  tfinal = 3\n 6  t = tinitial\n 7  S = 45400\n 8  I = 2100\n 9  R = 2500\n10  numberofsteps = 30\n11  deltat = (tfinal - tinitial) / numberofsteps\n12  FOR k = 1 TO numberofsteps\n13          Sprime = -.00001 * S * I\n14          Iprime = .00001 * S * I - I / 14\n15          Rprime = I / 14\n16          deltaS = Sprime * deltat\n17          deltaI = Iprime * deltat\n18          deltaR = Rprime * deltat\n19          LINE (t, S)-(t + deltat, S + deltaS)\n20          t = t + deltat\n21          S = S + deltaS\n22          I = I + deltaI\n23          R = R + deltaR\n24  NEXT k\n\n\n\n\n\n\n  \n    Graph\n    Each line(...) draws one straight segment, like BASIC's LINE,\n      and window(...) sets the visible range, like WINDOW.\n      Hover over the graph to read coordinates.\n    \n      Loading Python. The first run takes a few seconds.\n    \n    \n    \n  \n\n  \n    Python code\n    Press Run (or Ctrl/⌘ + Enter) to redraw the graph. Press Esc, then Tab, to leave the editor.\n    \n      Run\n      Reset\n       Run as I type\n      Loading Python…\n    \n    \n    \n      \n      \n        \n          \n          \n        \n      \n    \n  \n\n\n\n\n\n← PreviousSIRVALUE: from BASIC to PythonAll apps"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "SIR Models: from BASIC to Python",
+    "section": "",
+    "text": "Each app below runs one of the textbook’s BASIC programs, rewritten in Python, right in your browser. Click an app to open it.\nLeaving feedback: on any app page, highlight the text you want to comment on and choose Annotate in the pop-up, or open the sidebar on the right edge of the page.\n\n\n\n\n\n\n\n\n\n\nTitle\n\n\n\nDescription\n\n\n\nCategories\n\n\n\n\n\n\n\n\nSIR model: from BASIC to Python\n\n\nRuns the SIR program day by day, with a table and graph of S, I and R.\n\n\nIn review\n\n\n\n\n\n\nSIRVALUE: from BASIC to Python\n\n\nEstimates S, I and R at a single later time using several Euler steps.\n\n\nIn review\n\n\n\n\n\n\nGraphing S: from BASIC to Python\n\n\nGraphs S over three days as a chain of short line segments.\n\n\nIn review\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "apps/01-sir-model.html",
+    "href": "apps/01-sir-model.html",
+    "title": "SIR model: from BASIC to Python",
+    "section": "",
+    "text": "All appsNext →SIRVALUE: from BASIC to Python\nThis page runs the SIR (susceptible, infected, recovered) program from the BASIC listing below, rewritten in Python. The Python runs right here in your browser, and the table and graph show whatever the program prints. Edit the code and press Run to update them; Reset brings back the original program.\nThe model: each day, susceptible people become infected at a rate of a × S × I, and infected people recover at a rate of b × I. In the program, a = 0.00001 is the transmission coefficient and b = 1 / 14 is the recovery coefficient (an illness lasting about two weeks). The program uses Euler’s method: it computes the rates, multiplies by the time step deltat, and adds the changes to S, I and R."
+  },
+  {
+    "objectID": "apps/01-sir-model.html#notes-from-the-textbook",
+    "href": "apps/01-sir-model.html#notes-from-the-textbook",
+    "title": "SIR model: from BASIC to Python",
+    "section": "Notes from the textbook",
+    "text": "Notes from the textbook\n\nAdd notes here.\n\n\n\n\n\n\nNoteOriginal BASIC program\n\n\n\n\n\n 1  t = 0\n 2  S = 45400\n 3  I = 2100\n 4  R = 2500\n 5  deltat = 1\n 6  PRINT t, S, I, R\n 7  FOR k = 1 TO 3\n 8          Sprime = -.00001 * S * I\n 9          Iprime = .00001 * S * I - I / 14\n10          Rprime = I / 14\n11          deltaS = Sprime * deltat\n12          deltaI = Iprime * deltat\n13          deltaR = Rprime * deltat\n14          t = t + deltat\n15          S = S + deltaS\n16          I = I + deltaI\n17          R = R + deltaR\n18          PRINT t, S, I, R\n19  NEXT k\n\n\n\n\n\n\n  \n    Output table\n    Each print(...) of numbers becomes a row.\n    \n      Loading Python. The first run takes a few seconds.\n    \n    \n    \n\n    Graph\n    Straight segments join consecutive printed points, so each curve is piecewise linear.\n      The first number in each row is the horizontal axis.\n    \n    \n      The graph appears once the program runs.\n    \n  \n\n  \n    Python code\n    Press Run (or Ctrl/⌘ + Enter) to update the table and graph. Press Esc, then Tab, to leave the editor.\n    \n      Run\n      Reset\n       Run as I type\n      Loading Python…\n    \n    \n    \n      \n      \n        \n          \n          \n        \n      \n    \n  \n\n\n\n\n\nAll appsNext →SIRVALUE: from BASIC to Python"
+  }
+]

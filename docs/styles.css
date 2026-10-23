@@ -1,0 +1,48 @@
+/* Previous / All apps / Next links on each app page */
+.app-nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+.app-nav-top {
+  margin: 0 0 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #dee2e6;
+  font-size: 0.9rem;
+}
+.app-nav-bottom {
+  margin: 3rem 0 1rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #dee2e6;
+}
+.app-nav-link {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  min-width: 0;
+}
+.app-nav-next { text-align: right; }
+.app-nav-label {
+  font-size: 0.8rem;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.app-nav-title { font-weight: 500; }
+.app-nav-top .app-nav-label { font-size: 0.75rem; }
+.app-nav-home {
+  padding: 0.3rem 0.85rem;
+  border: 1px solid #ced4da;
+  border-radius: 999px;
+  text-decoration: none;
+  white-space: nowrap;
+  font-size: 0.9rem;
+}
+.app-nav-home:hover { background: #f1f3f5; }
+.app-nav-link:hover .app-nav-title { text-decoration: underline; }
+
+/* On narrow screens, drop the titles from the top bar to keep it on one line */
+@media (max-width: 600px) {
+  .app-nav-top .app-nav-title { display: none; }
+}

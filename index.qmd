@@ -1,0 +1,16 @@
+---
+title: "SIR Models: from BASIC to Python"
+listing:
+  contents: apps
+  type: table
+  fields: [title, description, categories]
+  sort: filename
+  sort-ui: false
+  filter-ui: false
+---
+
+Each app below runs one of the textbook's BASIC programs, rewritten in Python, right
+in your browser. Click an app to open it.
+
+**Leaving feedback:** on any app page, highlight the text you want to comment on and
+choose **Annotate** in the pop-up, or open the sidebar on the right edge of the page.

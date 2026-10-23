@@ -1,0 +1,29 @@
+---
+title: "Project Pages"
+subtitle: "Drafts and finished pages for review"
+format:
+  html:
+    toc: false
+---
+
+Welcome! Click any page below to open it. If you have feedback, use the
+annotation sidebar on that page (or let me know directly).
+
+## Pages
+
+| Page | Description | Status |
+|------|-------------|--------|
+| [SIR Model](sir-model.html) | Interactive SIR epidemic model | In review |
+
+<!--
+HOW TO ADD A NEW PAGE
+
+1. Create the new .qmd file in this same docs/ folder, e.g. my-new-page.qmd
+2. Render it:        quarto render docs/my-new-page.qmd
+3. Add a row to the table above, linking to the .html version, e.g.
+
+| [My New Page](my-new-page.html) | Short description | Draft |
+
+4. Re-render this page: quarto render docs/index.qmd
+5. Commit and push. The site updates within a minute or two.
+-->

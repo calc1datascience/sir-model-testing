@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Computes a left-endpoint Riemann sum for the integral of sqrt(1 + x^3) from 1 to 3.">
+
+<title>Riemann sums – SIR Models: from BASIC to Python</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-ba8f7c244c1f50cbf6c6a3aa3874339a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">SIR Models: from BASIC to Python</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">All apps</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Riemann sums</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">In review</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Computes a left-endpoint Riemann sum for the integral of sqrt(1 + x^3) from 1 to 3.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<nav class="app-nav app-nav-top" aria-label="App navigation"><a class="app-nav-link app-nav-prev" href="10-newton.html"><span class="app-nav-label">← Previous</span><span class="app-nav-title">Newton's method</span></a><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="12-taylor.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">Graphing a Taylor polynomial</span></a></nav>
+<p>This page runs a BASIC program that computes a Riemann sum for</p>
+<p><span class="math display">\[
+\int_1^3 \sqrt{1 + x^3}\, dx.
+\]</span></p>
+<p>The program is rewritten in Python and runs right here in your browser. Edit the code and press <strong>Run</strong> to run it again; <strong>Reset</strong> brings back the original program.</p>
+<p>The interval from <code>a = 1</code> to <code>b = 3</code> is split into <code>numberofsteps</code> pieces of width <code>deltax</code>. On each piece, <code>deltaS = fnf(x) * deltax</code> is the area of a rectangle whose height is the value of the function at the left end of the piece. The program adds these up in <code>accumulation</code> and prints each rectangle’s area next to the running total. With 4 steps the sum is about 5.2916.</p>
+<p>This integral has no formula in terms of familiar functions, so the Riemann sum is the way to find its value, which is about 6.22996. Because <span class="math inline">\(\sqrt{1 + x^3}\)</span> is increasing on <span class="math inline">\([1, 3]\)</span>, each left-endpoint rectangle sits below the curve and the sum comes out too small. Try <code>numberofsteps</code> = 40, 400, and 4000 and watch the last total climb toward 6.22996. (For large values the output gets long; you may want to move the <code>print</code> out of the loop so it prints just the final total.)</p>
+<p>QBasic lets a <code>FUNCTION</code> be written at the end of the program, after the code that uses it. Python needs a function to be defined before it is called, so in the Python the <code>def</code> comes first, and <code>return</code> gives back the value that BASIC sets with <code>fnf = ...</code>. <code>SQR</code> becomes <code>math.sqrt</code>, and <code>^</code> becomes <code>**</code>.</p>
+<section id="notes-from-the-textbook" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="notes-from-the-textbook">Notes from the textbook</h2>
+<!-- Write your notes from the textbook below, in ordinary Markdown,
+     and delete the placeholder line. -->
+<p><em>Add notes here.</em></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Original BASIC program
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<pre><code> 1  DEFDBL A-Z
+ 2  a = 1
+ 3  b = 3
+ 4  numberofsteps = 4
+ 5  deltax = (b - a) / numberofsteps
+ 6  x = a
+ 7  accumulation = 0
+ 8  FOR k = 1 TO numberofsteps
+ 9          deltaS = fnf(x) * deltax
+10          accumulation = accumulation + deltaS
+11          x = x + deltax
+12          PRINT deltaS, accumulation
+13  NEXT k
+14  FUNCTION fnf (x)
+15          fnf = SQR(1 + x ^ 3)
+16  END FUNCTION</code></pre>
+</div>
+</div>
+</div>
+<style>
+  .sir-grid { display: grid; grid-template-columns: 1fr; gap: 1.75rem; margin-top: 1.5rem; }
+  @media (min-width: 1100px) {
+    .sir-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  }
+  .sir-grid h2 { font-size: 1.25rem; margin: 0 0 0.25rem; border: 0; padding: 0; }
+  .sir-hint { font-size: 0.875rem; color: #5b6573; margin: 0 0 0.75rem; }
+  .sir-empty { padding: 1.25rem; color: #5b6573; font-size: 0.9rem; }
+  .sir-note { font-size: 0.85rem; color: #5b6573; margin-top: 0.5rem; }
+  .sir-legend { display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; margin-top: 0.6rem; font-size: 0.8rem; color: #5b6573; font-variant-numeric: tabular-nums; }
+  .sir-legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
+  .sir-legend i { display: inline-block; width: 1.4em; height: 0.6em; border-radius: 2px; border: 1px solid rgba(0, 0, 0, 0.25); }
+  .sir-out { border: 1px solid #d9dde3; border-radius: 6px; background: #f7f8fa; padding: 0.75rem 1rem; max-height: 32rem; overflow: auto; transition: opacity 0.2s; }
+  .sir-out.stale { opacity: 0.45; }
+  .sir-out, .sir-out pre, .sir-out table { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size: 14px; line-height: 1.55; }
+  .sir-out pre { margin: 0; padding: 0; border: 0; background: transparent; white-space: pre; }
+  .sir-out table { border-collapse: collapse; font-variant-numeric: tabular-nums; margin: 0; }
+  .sir-out td { padding: 0.05rem 2rem 0.05rem 0; text-align: right; border: 0; white-space: nowrap; }
+  .sir-out .sir-empty { padding: 0.5rem 0; font-family: inherit; }
+  .sir-graph-area { margin-top: 1.25rem; }
+  .sir-other { margin-top: 0.75rem; font-size: 0.85rem; background: #f7f8fa; border: 1px solid #e3e6ea; border-radius: 6px; padding: 0.6rem 0.8rem; white-space: pre-wrap; }
+
+  /* ---------- graph ---------- */
+  .sir-chart { position: relative; border: 1px solid #d9dde3; border-radius: 6px; padding: 6px 4px 0; transition: opacity 0.2s; }
+  .sir-chart.stale { opacity: 0.45; }
+  .sir-chart svg { width: 100%; height: auto; display: block; touch-action: pan-y; }
+  .sir-chart text { font-size: 12px; fill: #5b6573; font-family: inherit; font-variant-numeric: tabular-nums; }
+  .sir-chart .grid { stroke: #edf0f3; }
+  .sir-chart .axis { stroke: #9aa3ae; }
+  .sir-chart .hover-rule { stroke: #6b7480; stroke-dasharray: 3 3; }
+  .sir-tip { position: absolute; top: 10px; pointer-events: none; background: #fff; border: 1px solid #d9dde3;
+             border-radius: 6px; padding: 0.35rem 0.6rem; font-size: 0.8rem; line-height: 1.45;
+             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+  /* ---------- editor ---------- */
+  .sir-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; margin-bottom: 0.6rem; }
+  .sir-toolbar button { font: inherit; font-size: 0.9rem; padding: 0.3rem 0.85rem; border-radius: 5px; border: 1px solid #b9c0ca; background: #fff; cursor: pointer; }
+  .sir-toolbar button.primary { background: #1f5f99; border-color: #1f5f99; color: #fff; }
+  .sir-toolbar button:hover { filter: brightness(0.95); }
+  .sir-toolbar button:focus-visible { outline: 2px solid #1f5f99; outline-offset: 2px; }
+  .sir-editor textarea:focus { outline: none; }
+  .sir-editor:focus-within { border-color: #1f5f99; box-shadow: 0 0 0 2px rgba(31, 95, 153, 0.25); }
+  .sir-toolbar button:disabled { opacity: 0.5; cursor: default; }
+  .sir-toolbar label { font-size: 0.9rem; display: flex; align-items: center; gap: 0.35rem; margin: 0; }
+  .sir-status { font-size: 0.85rem; color: #5b6573; margin-left: auto; font-variant-numeric: tabular-nums; }
+  .sir-error { display: none; margin-bottom: 0.6rem; padding: 0.55rem 0.8rem; border-radius: 6px; background: #fdecec; color: #8a1f1f; font-size: 0.9rem; white-space: pre-wrap; }
+  .sir-error.show { display: block; }
+
+  .sir-editor { display: flex; border: 1px solid #d9dde3; border-radius: 6px; background: #f7f8fa; overflow: hidden; }
+  .sir-editor, .sir-editor textarea, .sir-editor pre.hl, .sir-gutter {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 14px; line-height: 1.55; tab-size: 4; letter-spacing: 0;
+  }
+  .sir-gutter { padding: 12px 10px 12px 12px; text-align: right; color: #9aa3ae; background: #eef1f4; user-select: none; min-width: 3em; }
+  .sir-gutter span { display: block; }
+  .sir-gutter span.err { color: #c62828; font-weight: 700; }
+  .sir-code { flex: 1; min-width: 0; overflow-x: auto; }
+  .sir-code-inner { position: relative; width: max-content; min-width: 100%; }
+  .sir-editor pre.hl {
+    margin: 0; padding: 12px; border: 0; border-radius: 0; background: transparent; color: #1f2937;
+    white-space: pre; overflow: visible;
+  }
+  .sir-editor pre.hl span.ln { display: block; }
+  .sir-editor pre.hl span.ln.err { background: #fbdada; }
+  .sir-editor textarea {
+    position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 12px; border: 0; resize: none;
+    background: transparent; color: transparent; caret-color: #111827; overflow: hidden;
+    white-space: pre; box-sizing: border-box;
+  }
+  .sir-editor textarea::selection { background: rgba(31, 95, 153, 0.25); }
+  .t-k { color: #8b3fb5; } .t-b { color: #1d6fb8; } .t-n { color: #b35900; }
+  .t-s { color: #2f7d4f; } .t-c { color: #8a94a3; font-style: italic; }
+</style>
+
+<div class="sir-grid column-page">
+  <section>
+    <h2 class="anchored">Output</h2>
+    <p class="sir-hint">Everything the program prints appears here, one line for each <code>print(...)</code>,
+      like BASIC's <code>PRINT</code>. Numbers printed on the same line are lined up in columns.</p>
+    <div class="sir-out" id="sir-out" aria-live="polite">
+      <div class="sir-empty">Loading Python. The first run takes a few seconds.</div>
+    </div>
+    <div class="sir-graph-area" id="sir-graph-area" hidden="">
+      <div class="sir-chart" id="sir-chart"></div>
+      <div class="sir-legend" id="sir-legend"></div>
+      <div class="sir-note" id="sir-note"></div>
+    </div>
+    <pre class="sir-other" id="sir-other" hidden=""></pre>
+  </section>
+
+  <section>
+    <h2 class="anchored">Python code</h2>
+    <p class="sir-hint">Press Run (or Ctrl/⌘ + Enter) to run the program again. Press Esc, then Tab, to leave the editor.</p>
+    <div class="sir-toolbar">
+      <button class="primary" id="sir-run" disabled="">Run</button>
+      <button id="sir-reset" title="Restore the original program (Ctrl/⌘ + Z undoes this)">Reset</button>
+      <label><input type="checkbox" id="sir-auto"> Run as I type</label>
+      <span class="sir-status" id="sir-status">Loading Python…</span>
+    </div>
+    <div class="sir-error" id="sir-error" role="alert"></div>
+    <div class="sir-editor">
+      <div class="sir-gutter" id="sir-gutter" aria-hidden="true"></div>
+      <div class="sir-code">
+        <div class="sir-code-inner">
+          <pre class="hl" id="sir-hl" aria-hidden="true"></pre>
+          <textarea id="sir-code" wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Python code"></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script type="module">
+// ------------------------------------------------------------------
+// The original program, translated line for line from the BASIC.
+// ------------------------------------------------------------------
+const ORIGINAL = `# BASIC: DEFDBL A-Z makes every variable double precision.
+# Python numbers with decimals are already double precision.
+
+# BASIC: SQR is the square root. In Python it is math.sqrt.
+import math
+
+# BASIC: FUNCTION fnf (x) ... END FUNCTION
+# Python needs a function defined before it is used, so it comes first.
+def fnf(x):
+    return math.sqrt(1 + x ** 3)
+
+a = 1
+b = 3
+numberofsteps = 4
+deltax = (b - a) / numberofsteps
+x = a
+accumulation = 0
+
+# BASIC: FOR k = 1 TO numberofsteps
+for k in range(1, numberofsteps + 1):
+    deltaS = fnf(x) * deltax
+    accumulation = accumulation + deltaS
+    x = x + deltax
+    print(deltaS, accumulation)
+`;
+
+// ------------------------------------------------------------------
+// window() and line() for the Python code, standing in for BASIC's
+// WINDOW and LINE. They record what to draw; the page draws it.
+// ------------------------------------------------------------------
+const PRELUDE = `
+import math as __basic_math
+__basic_window = None
+__basic_segments = []
+__basic_skipped = 0
+__basic_truncated = False
+__basic_fg = None
+__basic_bg = None
+__BASIC_MAX = 70000
+
+def __basic_point(p, name):
+    try:
+        x, y = p
+        return float(x), float(y)
+    except (TypeError, ValueError):
+        raise TypeError(name + " needs points written as (x, y), like " + name + "((0, 40000), (3, 45400))") from None
+
+def window(*points):
+    global __basic_window
+    if len(points) != 2:
+        raise TypeError("window needs two corner points, like window((0, 40000), (3, 45400))")
+    (x1, y1), (x2, y2) = __basic_point(points[0], "window"), __basic_point(points[1], "window")
+    if x1 == x2 or y1 == y2:
+        raise ValueError("window needs two different x values and two different y values")
+    __basic_window = (x1, y1, x2, y2)
+
+def __basic_colornum(c, name):
+    if c is None:
+        return None
+    if isinstance(c, float) and c.is_integer():
+        c = int(c)
+    if not isinstance(c, int) or isinstance(c, bool) or not 0 <= c <= 15:
+        raise ValueError("QBasic colors are whole numbers from 0 to 15 (in " + name + ")")
+    return c
+
+def color(foreground=None, background=None):
+    global __basic_fg, __basic_bg
+    __basic_fg = __basic_colornum(foreground, "color")
+    __basic_bg = __basic_colornum(background, "color")
+
+def line(*points):
+    global __basic_skipped, __basic_truncated
+    c = __basic_fg
+    if len(points) == 3:
+        c = __basic_colornum(points[2], "line")
+        points = points[:2]
+    if len(points) != 2:
+        raise TypeError("line needs two points and an optional color, like line((t, y), (t + deltat, y + deltay), j)")
+    (x1, y1), (x2, y2) = __basic_point(points[0], "line"), __basic_point(points[1], "line")
+    if not all(__basic_math.isfinite(v) for v in (x1, y1, x2, y2)):
+        __basic_skipped += 1
+    elif len(__basic_segments) >= __BASIC_MAX:
+        __basic_truncated = True
+    else:
+        __basic_segments.append((x1, y1, x2, y2, c))
+
+def __basic_result():
+    import json
+    return json.dumps({"window": __basic_window, "segments": __basic_segments, "background": __basic_bg,
+                       "skipped": __basic_skipped, "truncated": __basic_truncated})
+`;
+
+const TIMEOUT_MS = 5000;   // stop programs that run too long (e.g. an endless loop)
+const MAX_LINES = 5000;    // cap on printed lines kept
+
+const $ = id => document.getElementById(id);
+const ta = $("sir-code"), hl = $("sir-hl"), gutter = $("sir-gutter");
+const statusEl = $("sir-status"), errorEl = $("sir-error");
+const runBtn = $("sir-run"), resetBtn = $("sir-reset"), autoBox = $("sir-auto");
+const chartWrap = $("sir-chart"), noteEl = $("sir-note"), otherEl = $("sir-other"), legendEl = $("sir-legend");
+const outEl = $("sir-out"), graphArea = $("sir-graph-area");
+
+// QBasic's sixteen color numbers (the EGA palette).
+const PALETTE = ["#000000", "#0000AA", "#00AA00", "#00AAAA", "#AA0000", "#AA00AA", "#AA5500", "#AAAAAA",
+                 "#555555", "#5555FF", "#55FF55", "#55FFFF", "#FF5555", "#FF55FF", "#FFFF55", "#FFFFFF"];
+const PALETTE_NAMES = ["black", "blue", "green", "cyan", "red", "magenta", "brown", "light gray",
+                       "dark gray", "light blue", "light green", "light cyan", "light red", "light magenta",
+                       "yellow", "white"];
+const DEFAULT_STROKE = "#1f5f99";
+
+// ------------------------------------------------------------------
+// Editor: a transparent textarea over a syntax-highlighted <pre>.
+// ------------------------------------------------------------------
+const KW = new Set(("False None True and as assert async await break class continue def del elif else " +
+  "except finally for from global if import in is lambda nonlocal not or pass raise return try while with yield").split(" "));
+const BI = new Set("print range len abs min max round int float str list dict sum enumerate zip line window color".split(" "));
+const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+function highlightLine(line) {
+  const re = /(#.*$)|("(?:[^"\\]|\\.)*"?|'(?:[^'\\]|\\.)*'?)|(\.?\b\d[\d_]*\.?\d*(?:[eE][-+]?\d+)?)|([A-Za-z_]\w*)/g;
+  let out = "", last = 0, m;
+  while ((m = re.exec(line))) {
+    const tok = m[0];
+    out += esc(line.slice(last, m.index));
+    const cls = m[1] ? "c" : m[2] ? "s" : m[3] ? "n" : KW.has(tok) ? "k" : BI.has(tok) ? "b" : null;
+    out += cls ? `<span class="t-${cls}">${esc(tok)}</span>` : esc(tok);
+    last = m.index + tok.length;
+  }
+  return out + esc(line.slice(last));
+}
+
+let errorLine = null;
+function paint() {
+  const lines = ta.value.split("\n");
+  hl.innerHTML = lines.map((l, i) =>
+    `<span class="ln${i + 1 === errorLine ? " err" : ""}">${highlightLine(l) || " "}</span>`).join("");
+  gutter.innerHTML = lines.map((_, i) =>
+    `<span${i + 1 === errorLine ? ' class="err"' : ""}>${i + 1}</span>`).join("");
+}
+
+// Insert text in a way the browser's undo stack remembers.
+function insertText(text) {
+  if (!document.execCommand("insertText", false, text)) {
+    ta.setRangeText(text, ta.selectionStart, ta.selectionEnd, "end");
+    ta.dispatchEvent(new Event("input"));
+  }
+}
+
+let tabEscaped = false;
+ta.addEventListener("keydown", e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); requestRun(true); return; }
+  if (e.key === "Escape") { tabEscaped = true; return; }
+  if (e.key === "Tab" && !tabEscaped && !e.shiftKey) { e.preventDefault(); insertText("    "); return; }
+  if (e.key === "Enter" && !e.shiftKey && !e.altKey) {
+    const before = ta.value.slice(0, ta.selectionStart);
+    const line = before.slice(before.lastIndexOf("\n") + 1);
+    let indent = line.match(/^ */)[0];
+    if (/:\s*(#.*)?$/.test(line)) indent += "    ";
+    e.preventDefault();
+    insertText("\n" + indent);
+    return;
+  }
+  tabEscaped = false;
+});
+
+let debounce = null;
+ta.addEventListener("input", () => {
+  errorLine = null;
+  paint();
+  if (autoBox.checked) {
+    clearTimeout(debounce);
+    debounce = setTimeout(() => requestRun(), 500);
+  } else if (ready && !busy) {
+    setStatus("Code changed. Press Run to update.");
+  }
+});
+autoBox.addEventListener("change", () => { if (autoBox.checked) requestRun(); });
+
+resetBtn.addEventListener("click", () => {
+  ta.focus();
+  ta.select();
+  insertText(ORIGINAL);          // goes through undo, so Ctrl/⌘+Z brings your edits back
+  ta.setSelectionRange(0, 0);
+  ta.scrollTop = 0;
+  errorLine = null;
+  paint();
+  requestRun(true);
+});
+runBtn.addEventListener("click", () => requestRun(true));
+
+// ------------------------------------------------------------------
+// Python runs in a Web Worker so a runaway loop can't freeze the page.
+// Pyodide is loaded from the site's top-level pyodide/ folder, so no internet is needed.
+// ------------------------------------------------------------------
+const PYODIDE_BASE = new URL("../pyodide/", document.baseURI).href;
+const workerSource = `
+  import { loadPyodide } from "${PYODIDE_BASE}pyodide.mjs";
+  let py = null;
+  const ready = loadPyodide({ indexURL: "${PYODIDE_BASE}" })
+    .then(p => { py = p; postMessage({ type: "ready", version: p.version }); })
+    .catch(err => postMessage({ type: "fatal", message: String(err && err.message || err) }));
+  onmessage = async (e) => {
+    await ready;
+    if (!py) return;
+    const { id, code, prelude, maxLines } = e.data;
+    const lines = [];
+    let truncated = false;
+    const collect = s => { if (lines.length < maxLines) lines.push(s); else truncated = true; };
+    py.setStdout({ batched: collect });
+    py.setStderr({ batched: collect });
+    const t0 = performance.now();
+    const ns = py.globals.get("dict")();
+    try {
+      // The helpers get their own file name so error line numbers point at the student's code.
+      ns.set("__basic_src", prelude);
+      py.runPython("exec(compile(__basic_src, '<graphics>', 'exec'), globals()); del __basic_src", { globals: ns });
+      await py.runPythonAsync(code, { globals: ns });
+      const result = py.runPython("__basic_result()", { globals: ns });
+      postMessage({ type: "result", id, lines, truncated, result, ms: performance.now() - t0 });
+    } catch (err) {
+      postMessage({ type: "error", id, lines, truncated, message: String(err && err.message || err) });
+    } finally {
+      ns.destroy();
+    }
+  };
+`;
+const workerUrl = URL.createObjectURL(new Blob([workerSource], { type: "text/javascript" }));
+
+let worker = null, ready = false, busy = false, pending = true, runId = 0, killTimer = null;
+// pending starts true so the program runs once Python first loads.
+
+function startWorker() {
+  ready = false;
+  busy = false;
+  runBtn.disabled = true;
+  worker = new Worker(workerUrl, { type: "module" });
+  worker.onmessage = onWorkerMessage;
+  worker.onerror = e => showFatal(e.message || "The Python worker failed to start.");
+}
+
+function showFatal(msg) {
+  setStatus("Python unavailable");
+  outEl.innerHTML = `<div class="sir-empty">Couldn't start Python: ${esc(msg)}<br>
+    Make sure the <code>pyodide</code> folder is at the top level of the project and that you're
+    viewing the page through <code>quarto preview</code> (not by opening the HTML file directly).</div>`;
+}
+
+function setStatus(s) { statusEl.textContent = s; }
+
+function requestRun(now = false) {
+  clearTimeout(debounce);
+  if (!ready || busy) { pending = true; return; }
+  execute();
+}
+
+function execute() {
+  pending = false;
+  busy = true;
+  const id = ++runId;
+  setStatus("Running…");
+  clearTimeout(killTimer);
+  killTimer = setTimeout(() => {
+    worker.terminate();
+    showError(`Stopped after ${TIMEOUT_MS / 1000} seconds. Check for a loop that never ends, ` +
+              `or a loop with far more steps than you meant.`, null);
+    setStatus("Restarting Python…");
+    pending = false;
+    startWorker();
+  }, TIMEOUT_MS);
+  worker.postMessage({ id, code: ta.value, prelude: PRELUDE, maxLines: MAX_LINES });
+}
+
+function onWorkerMessage(e) {
+  const msg = e.data;
+  if (msg.type === "ready") {
+    ready = true;
+    runBtn.disabled = false;
+    setStatus(`Python ${msg.version} ready`);
+    // After a timeout restart, pending is false, so the runaway code isn't run again
+    // until you edit it or press Run.
+    if (pending) execute();
+    return;
+  }
+  if (msg.type === "fatal") { showFatal(msg.message); return; }
+  if (msg.id !== runId) return;
+
+  clearTimeout(killTimer);
+  busy = false;
+  if (msg.type === "result") {
+    clearError();
+    const res = JSON.parse(msg.result);
+    renderGraph(res);
+    renderPrinted(msg.lines, msg.truncated);
+    const n = msg.lines.length;
+    setStatus(`Ran in ${msg.ms < 10 ? msg.ms.toFixed(1) : Math.round(msg.ms)} ms, ${n} line${n === 1 ? "" : "s"} printed`);
+  } else {
+    const { text, line } = cleanTraceback(msg.message);
+    showError(text, line);
+    setStatus("Error");
+  }
+  if (pending) execute();
+}
+
+// Turn Pyodide's long traceback into "Line N: ErrorType: message".
+function cleanTraceback(raw) {
+  const lines = raw.trim().split("\n");
+  const last = lines[lines.length - 1] || raw;
+  let line = null;
+  for (const l of lines) {
+    const m = l.match(/File "<exec>", line (\d+)/);
+    if (m) line = Number(m[1]);
+  }
+  return { text: line ? `Line ${line}: ${last}` : last, line };
+}
+
+function showError(text, line) {
+  errorEl.textContent = text + "\nThe output shows the last successful run.";
+  errorEl.classList.add("show");
+  chartWrap.classList.add("stale");
+  outEl.classList.add("stale");
+  errorLine = line;
+  paint();
+}
+
+function clearError() {
+  errorEl.classList.remove("show");
+  chartWrap.classList.remove("stale");
+  outEl.classList.remove("stale");
+  if (errorLine !== null) { errorLine = null; paint(); }
+}
+
+// Printed output. If every line is just numbers, line them up in columns,
+// the way BASIC's PRINT lines up values separated by commas.
+const NUM = /^[-+]?(\d+\.?\d*|\.\d+)([eE][-+]?\d+)?$|^-?(inf|nan)$/;
+function renderPrinted(lines, truncated) {
+  const rows = lines.join("\n").replace(/\s+$/, "").split("\n");
+  if (rows.length === 1 && rows[0] === "") {
+    outEl.innerHTML = `<div class="sir-empty">The program didn't print anything. Use <code>print(...)</code> to show a value.</div>`;
+    return;
+  }
+  const cells = rows.map(r => r.trim() === "" ? [] : r.trim().split(/\s+/));
+  const numeric = cells.every(c => c.every(v => NUM.test(v)));
+  const wide = cells.some(c => c.length > 1);
+  let html;
+  if (numeric && wide) {
+    html = "<table><tbody>" + cells.map(c =>
+      "<tr>" + (c.length ? c.map(v => `<td>${esc(v)}</td>`).join("") : "<td>&nbsp;</td>") + "</tr>").join("") + "</tbody></table>";
+  } else {
+    html = `<pre>${esc(rows.join("\n"))}</pre>`;
+  }
+  if (truncated) html += `<div class="sir-empty">(cut off after ${MAX_LINES} lines)</div>`;
+  outEl.innerHTML = html;
+}
+
+// ------------------------------------------------------------------
+// Graph: the segments from line(), drawn as SVG inside the window().
+// ------------------------------------------------------------------
+const fmt = new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 });
+const fmtRead = new Intl.NumberFormat("en-US", { maximumSignificantDigits: 5 });
+
+function stepFor(lo, hi, count) {
+  const raw = (hi - lo) / count;
+  const mag = 10 ** Math.floor(Math.log10(raw));
+  const r = raw / mag;
+  return (r >= 7.5 ? 10 : r >= 3.5 ? 5 : r >= 1.5 ? 2 : 1) * mag;
+}
+
+// Ticks inside a fixed range (for a window set by the program).
+function ticksWithin(lo, hi, count) {
+  const step = stepFor(lo, hi, count);
+  const ticks = [];
+  for (let v = Math.ceil(lo / step - 1e-9) * step; v <= hi + step * 1e-9; v += step)
+    ticks.push(Number(v.toPrecision(12)));
+  return ticks;
+}
+
+// A range widened to round numbers (when the program sets no window).
+function niceRange(lo, hi, count) {
+  if (!(hi > lo)) { const pad = Math.abs(lo) * 0.1 || 1; lo -= pad; hi += pad; }
+  const step = stepFor(lo, hi, count);
+  return [Math.floor(lo / step + 1e-9) * step, Math.ceil(hi / step - 1e-9) * step];
+}
+
+let lastResult = null;
+let lastChartWidth = 0;
+new ResizeObserver(() => {
+  const w = chartWrap.clientWidth;
+  if (lastResult && w !== lastChartWidth) { lastChartWidth = w; renderGraph(lastResult); }
+}).observe(chartWrap);
+
+function renderGraph(res) {
+  graphArea.hidden = !(res.segments.length || res.window);
+  if (graphArea.hidden) { lastResult = null; return; }
+  lastResult = res;
+  const segs = res.segments;
+  const notes = [];
+  if (res.skipped) notes.push(`${res.skipped} segment${res.skipped === 1 ? " was" : "s were"} skipped because a coordinate was too large or not a number.`);
+  if (res.truncated) notes.push("Only the first 70,000 segments are drawn.");
+  legendEl.innerHTML = "";
+
+  let x1, x2, y1, y2;
+  if (res.window) {
+    const [a, b, c, d] = res.window;
+    [x1, x2] = [Math.min(a, c), Math.max(a, c)];
+    [y1, y2] = [Math.min(b, d), Math.max(b, d)];
+    const visible = segs.some(s => Math.max(s[0], s[2]) >= x1 && Math.min(s[0], s[2]) <= x2 &&
+                                   Math.max(s[1], s[3]) >= y1 && Math.min(s[1], s[3]) <= y2);
+    if (segs.length && !visible)
+      notes.push("Every segment falls outside the window. Change the numbers in window(...) to see them.");
+  } else if (segs.length) {
+    let a = Infinity, b = -Infinity, c = Infinity, d = -Infinity;
+    for (const s of segs) {
+      a = Math.min(a, s[0], s[2]); b = Math.max(b, s[0], s[2]);
+      c = Math.min(c, s[1], s[3]); d = Math.max(d, s[1], s[3]);
+    }
+    [x1, x2] = niceRange(a, b, 6);
+    [y1, y2] = niceRange(c, d, 5);
+    notes.push("No window(...) was set, so the graph is sized to fit the segments.");
+  } else {
+    chartWrap.innerHTML = `<div class="sir-empty">The program didn't draw anything.
+      Use <code>line((x1, y1), (x2, y2))</code> to draw a segment.</div>`;
+    noteEl.textContent = notes.join(" ");
+    return;
+  }
+  if (!segs.length) notes.push("The program set a window but didn't draw any segments.");
+  noteEl.textContent = notes.join(" ");
+
+  const W = Math.max(260, chartWrap.clientWidth - 8);
+  const H = Math.round(Math.min(400, Math.max(240, W * 0.66)));
+  const M = { l: 62, r: 16, t: 12, b: 32 };
+  const sx = x => M.l + (x - x1) / (x2 - x1) * (W - M.l - M.r);
+  const sy = y => H - M.b - (y - y1) / (y2 - y1) * (H - M.t - M.b);
+  const f1 = v => v.toFixed(1);
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Graph of ${segs.length} line segments">`;
+  svg += `<defs><clipPath id="sir-clip"><rect x="${M.l}" y="${M.t}" width="${W - M.l - M.r}" height="${H - M.t - M.b}"/></clipPath></defs>`;
+  if (res.background !== null && res.background !== undefined)
+    svg += `<rect x="${M.l}" y="${M.t}" width="${W - M.l - M.r}" height="${H - M.t - M.b}" fill="${PALETTE[res.background]}"/>`;
+  for (const v of ticksWithin(y1, y2, 5)) {
+    svg += `<line class="grid" x1="${M.l}" x2="${W - M.r}" y1="${f1(sy(v))}" y2="${f1(sy(v))}"/>`;
+    svg += `<text x="${M.l - 8}" y="${f1(sy(v))}" dy="0.32em" text-anchor="end">${fmt.format(v)}</text>`;
+  }
+  for (const v of ticksWithin(x1, x2, 6)) {
+    svg += `<line class="axis" x1="${f1(sx(v))}" x2="${f1(sx(v))}" y1="${H - M.b}" y2="${H - M.b + 5}"/>`;
+    svg += `<text x="${f1(sx(v))}" y="${H - M.b + 18}" text-anchor="middle">${fmt.format(v)}</text>`;
+  }
+  svg += `<line class="axis" x1="${M.l}" x2="${M.l}" y1="${M.t}" y2="${H - M.b}"/>`;
+  svg += `<line class="axis" x1="${M.l}" x2="${W - M.r}" y1="${H - M.b}" y2="${H - M.b}"/>`;
+  // One path per color, drawn in the order the colors first appear, so later runs sit on top.
+  const groups = new Map();
+  for (const s of segs) {
+    const key = s[4] === null || s[4] === undefined ? "default" : s[4];
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(`M${f1(sx(s[0]))},${f1(sy(s[1]))}L${f1(sx(s[2]))},${f1(sy(s[3]))}`);
+  }
+  for (const [key, parts] of groups) {
+    const stroke = key === "default" ? DEFAULT_STROKE : PALETTE[key];
+    svg += `<path d="${parts.join("")}" clip-path="url(#sir-clip)" fill="none" stroke="${stroke}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+  }
+  if (groups.size > 1 || !groups.has("default")) {
+    legendEl.innerHTML = [...groups].map(([key, parts]) => {
+      const name = key === "default" ? "no color given" : `color ${key} (${PALETTE_NAMES[key]})`;
+      const stroke = key === "default" ? DEFAULT_STROKE : PALETTE[key];
+      return `<span><i style="background:${stroke}"></i>${name}: ${parts.length.toLocaleString("en-US")} segment${parts.length === 1 ? "" : "s"}</span>`;
+    }).join("");
+  }
+  svg += `<line class="hover-rule" y1="${M.t}" y2="${H - M.b}" style="display:none"/>`;
+  svg += `<rect class="hit" x="${M.l}" y="${M.t}" width="${W - M.l - M.r}" height="${H - M.t - M.b}" fill="transparent"/></svg>`;
+  chartWrap.innerHTML = svg + `<div class="sir-tip" hidden></div>`;
+
+  // Hover (or touch) to read the coordinates under the pointer.
+  const svgEl = chartWrap.querySelector("svg"), rule = svgEl.querySelector(".hover-rule");
+  const hit = svgEl.querySelector(".hit"), tip = chartWrap.querySelector(".sir-tip");
+  hit.addEventListener("pointermove", e => {
+    const box = svgEl.getBoundingClientRect();
+    const vx = (e.clientX - box.left) * W / box.width, vy = (e.clientY - box.top) * H / box.height;
+    const x = x1 + (vx - M.l) / (W - M.l - M.r) * (x2 - x1);
+    const y = y1 + (H - M.b - vy) / (H - M.t - M.b) * (y2 - y1);
+    rule.setAttribute("x1", vx);
+    rule.setAttribute("x2", vx);
+    rule.style.display = "";
+    tip.textContent = `(${fmtRead.format(x)}, ${fmtRead.format(y)})`;
+    tip.hidden = false;
+    const left = vx * box.width / W;
+    tip.style.left = (left + tip.offsetWidth + 14 > box.width ? left - tip.offsetWidth - 10 : left + 10) + "px";
+  });
+  hit.addEventListener("pointerleave", () => { rule.style.display = "none"; tip.hidden = true; });
+}
+
+// ------------------------------------------------------------------
+ta.value = ORIGINAL;
+paint();
+startWorker();
+</script>
+
+
+<nav class="app-nav app-nav-bottom" aria-label="App navigation"><a class="app-nav-link app-nav-prev" href="10-newton.html"><span class="app-nav-label">← Previous</span><span class="app-nav-title">Newton's method</span></a><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="12-taylor.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">Graphing a Taylor polynomial</span></a></nav>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

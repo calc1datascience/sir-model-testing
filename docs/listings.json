@@ -4,7 +4,16 @@
     "items": [
       "/apps/01-sir-model.html",
       "/apps/02-sir-value.html",
-      "/apps/03-sir-plot.html"
+      "/apps/03-sir-plot.html",
+      "/apps/04-dowhile.html",
+      "/apps/05-sequence.html",
+      "/apps/06-length.html",
+      "/apps/07-babylon.html",
+      "/apps/08-table.html",
+      "/apps/09-plot.html",
+      "/apps/10-newton.html",
+      "/apps/11-riemann.html",
+      "/apps/12-taylor.html"
     ]
   }
 ]

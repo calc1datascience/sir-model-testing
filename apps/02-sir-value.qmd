@@ -1,6 +1,7 @@
 ---
 title: "SIRVALUE"
-description: "Estimates S, I and R at a single later time using several Euler steps."
+description: "Prints the final values of t, S, I, and R."
+location: "P. 65, section 2.1."
 categories: [In review]
 ---
 

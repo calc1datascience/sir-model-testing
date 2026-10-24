@@ -1,6 +1,6 @@
 ---
 title: "DOWHILE"
-description: "Graphs S step by step until the number of infected people stops growing, then prints the time."
+location: "P.77, section 2.1."
 categories: [In review]
 ---
 This page runs a BASIC program that graphs S, the number of susceptible people, and keeps

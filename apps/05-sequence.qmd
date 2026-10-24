@@ -1,6 +1,6 @@
 ---
 title: "SEQUENCE"
-description: "Graphs Euler's method for a logistic equation 14 times, doubling the number of steps each time and drawing each run in its own color."
+location: "P. 83, section 2.2."
 categories: [In review]
 ---
 

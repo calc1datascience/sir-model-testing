@@ -1,6 +1,6 @@
 ---
 title: "RIEMANN"
-description: "Computes a left-endpoint Riemann sum for the integral of sqrt(1 + x^3) from 1 to 3."
+location: "P. 360, section 6.2"
 categories: [In review]
 ---
 

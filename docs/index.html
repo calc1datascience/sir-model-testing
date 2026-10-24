@@ -85,7 +85,7 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-title','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
+      valueNames: ['listing-title','listing-description','listing-location','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
       
       searchColumns: ["listing-title","listing-author"],
     };
@@ -213,6 +213,10 @@ Description
 </th>
 
 <th>
+location
+</th>
+
+<th>
 Categories
 </th>
 
@@ -220,12 +224,15 @@ Categories
 </thead>
 <tbody class="list">
 
-<tr data-index="0" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792810870409" data-listing-reading-time-sort="21" data-listing-word-count-sort="4024" data-listing-title-sort="SIR" data-listing-filename-sort="01-sir-model.qmd">
+<tr data-index="0" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792873190405" data-listing-reading-time-sort="21" data-listing-word-count-sort="4042" data-listing-title-sort="SIR" data-listing-filename-sort="01-sir-model.qmd">
 <td>
 <a href="./apps/01-sir-model.html" class="title listing-title">SIR</a>
 </td>
 <td>
-<span class="listing-description">Runs the SIR program day by day, with a table and graph of S, I and R.</span>
+<span class="listing-description"><strong>Do I need to cite the textbook if I pull the first sentence of the description from the textbook?</strong></span>
+</td>
+<td>
+<span class="listing-location">P. 50, section 1.3. Calculates values of S, I, and R.</span>
 </td>
 <td>
 <span class="listing-categories">In review</span>
@@ -233,12 +240,15 @@ Categories
 
 </tr>
 
-<tr data-index="1" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792810869505" data-listing-reading-time-sort="15" data-listing-word-count-sort="2967" data-listing-title-sort="SIRVALUE" data-listing-filename-sort="02-sir-value.qmd">
+<tr data-index="1" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792873190405" data-listing-reading-time-sort="15" data-listing-word-count-sort="2967" data-listing-title-sort="SIRVALUE" data-listing-filename-sort="02-sir-value.qmd">
 <td>
 <a href="./apps/02-sir-value.html" class="title listing-title">SIRVALUE</a>
 </td>
 <td>
-<span class="listing-description">Estimates S, I and R at a single later time using several Euler steps.</span>
+<span class="listing-description">This page runs the SIRVALUE program from the BASIC listing below (see page 65), rewritten in Python. The Python runs right here in your browser, and the table shows whatever…<strong></strong><strong></strong></span>
+</td>
+<td>
+<span class="listing-location">P. 65, section 2.1.</span>
 </td>
 <td>
 <span class="listing-categories">In review</span>
@@ -246,12 +256,15 @@ Categories
 
 </tr>
 
-<tr data-index="2" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792810868325" data-listing-reading-time-sort="22" data-listing-word-count-sort="4290" data-listing-title-sort="SIRPLOT" data-listing-filename-sort="03-sir-plot.qmd">
+<tr data-index="2" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792873190405" data-listing-reading-time-sort="22" data-listing-word-count-sort="4290" data-listing-title-sort="SIRPLOT" data-listing-filename-sort="03-sir-plot.qmd">
 <td>
 <a href="./apps/03-sir-plot.html" class="title listing-title">SIRPLOT</a>
 </td>
 <td>
-<span class="listing-description">Graphs S over three days as a chain of short line segments.</span>
+<span class="listing-description">This page runs a BASIC program that graphs S, the number of susceptible people, over three days. The program is rewritten in Python and runs right here in your browser. Edit…<strong></strong><strong></strong></span>
+</td>
+<td>
+<span class="listing-location">P. 69, section 2.1.</span>
 </td>
 <td>
 <span class="listing-categories">In review</span>
@@ -259,12 +272,15 @@ Categories
 
 </tr>
 
-<tr data-index="3" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792810867486" data-listing-reading-time-sort="23" data-listing-word-count-sort="4482" data-listing-title-sort="DOWHILE" data-listing-filename-sort="04-dowhile.qmd">
+<tr data-index="3" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792873190405" data-listing-reading-time-sort="23" data-listing-word-count-sort="4482" data-listing-title-sort="DOWHILE" data-listing-filename-sort="04-dowhile.qmd">
 <td>
 <a href="./apps/04-dowhile.html" class="title listing-title">DOWHILE</a>
 </td>
 <td>
-<span class="listing-description">Graphs S step by step until the number of infected people stops growing, then prints the time.</span>
+<span class="listing-description">This page runs a BASIC program that graphs S, the number of susceptible people, and keeps going until the epidemic reaches its peak. The program is rewritten in Python and…<strong></strong><strong></strong></span>
+</td>
+<td>
+<span class="listing-location">P.77, section 2.1.</span>
 </td>
 <td>
 <span class="listing-categories">In review</span>
@@ -272,12 +288,15 @@ Categories
 
 </tr>
 
-<tr data-index="4" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792810882698" data-listing-reading-time-sort="26" data-listing-word-count-sort="5144" data-listing-title-sort="SEQUENCE" data-listing-filename-sort="05-sequence.qmd">
+<tr data-index="4" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792873190405" data-listing-reading-time-sort="26" data-listing-word-count-sort="5144" data-listing-title-sort="SEQUENCE" data-listing-filename-sort="05-sequence.qmd">
 <td>
 <a href="./apps/05-sequence.html" class="title listing-title">SEQUENCE</a>
 </td>
 <td>
-<span class="listing-description">Graphs Euler’s method for a logistic equation 14 times, doubling the number of steps each time and drawing each run in its own color.</span>
+<span class="listing-description">This page runs a BASIC program that solves the same differential equation fourteen times, each time with twice as many steps as the time before, and draws all fourteen…<strong></strong><strong></strong></span>
+</td>
+<td>
+<span class="listing-location">P. 83, section 2.2.</span>
 </td>
 <td>
 <span class="listing-categories">In review</span>
@@ -285,12 +304,15 @@ Categories
 
 </tr>
 
-<tr data-index="5" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792810865148" data-listing-reading-time-sort="26" data-listing-word-count-sort="5119" data-listing-title-sort="LENGTH" data-listing-filename-sort="06-length.qmd">
+<tr data-index="5" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792873190405" data-listing-reading-time-sort="26" data-listing-word-count-sort="5119" data-listing-title-sort="LENGTH" data-listing-filename-sort="06-length.qmd">
 <td>
 <a href="./apps/06-length.html" class="title listing-title">LENGTH</a>
 </td>
 <td>
-<span class="listing-description">Approximates the length of the parabola y = x^2 from x = 0 to 1 by a chain of straight segments.</span>
+<span class="listing-description">This page runs a BASIC program that estimates the length of a curve, the parabola <span class="math inline">\(y = x^2\)</span> from <span class="math inline">\(x = 0\)</span> to <span class="math inline">\(x = 1\)</span>. The program is rewritten in Python and runs right…<strong></strong><strong></strong></span>
+</td>
+<td>
+<span class="listing-location">P. 91, section 2.3</span>
 </td>
 <td>
 <span class="listing-categories">In review</span>
@@ -298,12 +320,15 @@ Categories
 
 </tr>
 
-<tr data-index="6" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792810899757" data-listing-reading-time-sort="25" data-listing-word-count-sort="4821" data-listing-title-sort="BABYLON" data-listing-filename-sort="07-babylon.qmd">
+<tr data-index="6" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792873190405" data-listing-reading-time-sort="25" data-listing-word-count-sort="4821" data-listing-title-sort="BABYLON" data-listing-filename-sort="07-babylon.qmd">
 <td>
 <a href="./apps/07-babylon.html" class="title listing-title">BABYLON</a>
 </td>
 <td>
-<span class="listing-description">Finds the square root of 5 by repeatedly averaging a guess x with 5 / x.</span>
+<span class="listing-description">This page runs a BASIC program that finds <span class="math inline">\(\sqrt{5}\)</span> using a method known to the Babylonians nearly 4,000 years ago. The program is rewritten in Python and runs right here…<strong></strong><strong></strong></span>
+</td>
+<td>
+<span class="listing-location">P. 94, section 2.3</span>
 </td>
 <td>
 <span class="listing-categories">In review</span>
@@ -311,12 +336,15 @@ Categories
 
 </tr>
 
-<tr data-index="7" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792810912327" data-listing-reading-time-sort="25" data-listing-word-count-sort="4963" data-listing-title-sort="TABLE" data-listing-filename-sort="08-table.qmd">
+<tr data-index="7" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792873190405" data-listing-reading-time-sort="25" data-listing-word-count-sort="4963" data-listing-title-sort="TABLE" data-listing-filename-sort="08-table.qmd">
 <td>
 <a href="./apps/08-table.html" class="title listing-title">TABLE</a>
 </td>
 <td>
-<span class="listing-description">Builds a table of the accumulated values of cos(t^2) from t = 0 to 4 with Euler’s method.</span>
+<span class="listing-description">This page runs a BASIC program that makes a table for the accumulation function</span>
+</td>
+<td>
+<span class="listing-location">P. 266, section 4.5</span>
 </td>
 <td>
 <span class="listing-categories">In review</span>
@@ -324,12 +352,15 @@ Categories
 
 </tr>
 
-<tr data-index="8" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792810917991" data-listing-reading-time-sort="24" data-listing-word-count-sort="4779" data-listing-title-sort="PLOT" data-listing-filename-sort="09-plot.qmd">
+<tr data-index="8" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792873190405" data-listing-reading-time-sort="24" data-listing-word-count-sort="4779" data-listing-title-sort="PLOT" data-listing-filename-sort="09-plot.qmd">
 <td>
 <a href="./apps/09-plot.html" class="title listing-title">PLOT</a>
 </td>
 <td>
-<span class="listing-description">Graphs the accumulation of cos(t^2) from t = 0 to 4 as a chain of 400 short segments.</span>
+<span class="listing-description">This page runs a BASIC program that graphs the accumulation function</span>
+</td>
+<td>
+<span class="listing-location">P. 268, section 4.5</span>
 </td>
 <td>
 <span class="listing-categories">In review</span>
@@ -337,12 +368,15 @@ Categories
 
 </tr>
 
-<tr data-index="9" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792810926333" data-listing-reading-time-sort="25" data-listing-word-count-sort="4953" data-listing-title-sort="NEWTON" data-listing-filename-sort="10-newton.qmd">
+<tr data-index="9" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792873190405" data-listing-reading-time-sort="25" data-listing-word-count-sort="4953" data-listing-title-sort="NEWTON" data-listing-filename-sort="10-newton.qmd">
 <td>
 <a href="./apps/10-newton.html" class="title listing-title">NEWTON</a>
 </td>
 <td>
-<span class="listing-description">Finds a root of 4x^3 + 3x^2 + 2x + 1 = 0 by following tangent lines, starting from x = -1.</span>
+<span class="listing-description">This page runs a BASIC program that uses Newton’s method to solve</span>
+</td>
+<td>
+<span class="listing-location">P. 321, section 5.5</span>
 </td>
 <td>
 <span class="listing-categories">In review</span>
@@ -350,12 +384,15 @@ Categories
 
 </tr>
 
-<tr data-index="10" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792810933706" data-listing-reading-time-sort="25" data-listing-word-count-sort="4971" data-listing-title-sort="RIEMANN" data-listing-filename-sort="11-riemann.qmd">
+<tr data-index="10" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792873190405" data-listing-reading-time-sort="25" data-listing-word-count-sort="4971" data-listing-title-sort="RIEMANN" data-listing-filename-sort="11-riemann.qmd">
 <td>
 <a href="./apps/11-riemann.html" class="title listing-title">RIEMANN</a>
 </td>
 <td>
-<span class="listing-description">Computes a left-endpoint Riemann sum for the integral of sqrt(1 + x^3) from 1 to 3.</span>
+<span class="listing-description">This page runs a BASIC program that computes a Riemann sum for</span>
+</td>
+<td>
+<span class="listing-location">P. 360, section 6.2</span>
 </td>
 <td>
 <span class="listing-categories">In review</span>
@@ -363,12 +400,79 @@ Categories
 
 </tr>
 
-<tr data-index="11" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792810939771" data-listing-reading-time-sort="26" data-listing-word-count-sort="5083" data-listing-title-sort="TAYLOR" data-listing-filename-sort="12-taylor.qmd">
+<tr data-index="11" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792873190393" data-listing-reading-time-sort="26" data-listing-word-count-sort="5083" data-listing-title-sort="TAYLOR" data-listing-filename-sort="12-taylor.qmd">
 <td>
 <a href="./apps/12-taylor.html" class="title listing-title">TAYLOR</a>
 </td>
 <td>
-<span class="listing-description">Graphs the degree-17 Taylor polynomial for sin x from x = 0 to 3.14.</span>
+<span class="listing-description">This page runs a BASIC program that graphs the Taylor polynomial of degree 17 for <span class="math inline">\(\sin x\)</span>,</span>
+</td>
+<td>
+<span class="listing-location">P. 600, section 10.2</span>
+</td>
+<td>
+<span class="listing-categories">In review</span>
+</td>
+
+</tr>
+
+<tr data-index="12" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792873190384" data-listing-reading-time-sort="29" data-listing-word-count-sort="5780" data-listing-title-sort="SIRSERIES" data-listing-filename-sort="13-sirseries.qmd">
+<td>
+<a href="./apps/13-sirseries.html" class="title listing-title">SIRSERIES</a>
+</td>
+<td>
+<span class="listing-description">This page runs a BASIC program that finds the solutions of the SIR model as power series,</span>
+</td>
+<td>
+<span class="listing-location">P. 636, section 10.2</span>
+</td>
+<td>
+<span class="listing-categories">In review</span>
+</td>
+
+</tr>
+
+<tr data-index="13" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792873190384" data-listing-reading-time-sort="24" data-listing-word-count-sort="4753" data-listing-title-sort="HARMONIC" data-listing-filename-sort="14-harmonic.qmd">
+<td>
+<a href="./apps/14-harmonic.html" class="title listing-title">HARMONIC</a>
+</td>
+<td>
+<span class="listing-description">This page runs a BASIC program that adds up the first n terms of the harmonic series,</span>
+</td>
+<td>
+<span class="listing-location">P. 662, section 10.2</span>
+</td>
+<td>
+<span class="listing-categories">In review</span>
+</td>
+
+</tr>
+
+<tr data-index="14" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792873190384" data-listing-reading-time-sort="26" data-listing-word-count-sort="5139" data-listing-title-sort="DETECTOR" data-listing-filename-sort="15-detector.qmd">
+<td>
+<a href="./apps/15-detector.html" class="title listing-title">DETECTOR</a>
+</td>
+<td>
+<span class="listing-description">This page runs a BASIC program that detects the frequency of a periodic function. The program is rewritten in Python and runs right here in your browser. Edit the code and…<strong></strong><strong></strong></span>
+</td>
+<td>
+<span class="listing-location">P. 803, section 12.3</span>
+</td>
+<td>
+<span class="listing-categories">In review</span>
+</td>
+
+</tr>
+
+<tr data-index="15" data-categories="SW4lMjByZXZpZXc=" data-listing-file-modified-sort="1792873190381" data-listing-reading-time-sort="28" data-listing-word-count-sort="5554" data-listing-title-sort="POWER" data-listing-filename-sort="16-power.qmd">
+<td>
+<a href="./apps/16-power.html" class="title listing-title">POWER</a>
+</td>
+<td>
+<span class="listing-description">This page runs a BASIC program that graphs a power spectrum: for each frequency ω, how strongly that frequency is present in a function. The program is rewritten in Python…<strong></strong><strong></strong></span>
+</td>
+<td>
+<span class="listing-location">P. 810, section 12.3</span>
 </td>
 <td>
 <span class="listing-categories">In review</span>

@@ -1,6 +1,6 @@
 ---
 title: "TAYLOR"
-description: "Graphs the degree-17 Taylor polynomial for sin x from x = 0 to 3.14."
+location: "P. 600, section 10.2"
 categories: [In review]
 ---
 

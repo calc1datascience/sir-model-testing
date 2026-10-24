@@ -3,7 +3,7 @@ title: "SIR Models: from BASIC to Python"
 listing:
   contents: apps
   type: table
-  fields: [title, description, categories]
+  fields: [title, description, location,categories]
   sort: filename
   sort-ui: false
   filter-ui: false

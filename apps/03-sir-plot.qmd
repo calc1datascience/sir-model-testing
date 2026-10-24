@@ -1,6 +1,7 @@
 ---
 title: "SIRPLOT"
-description: "Graphs S over three days as a chain of short line segments."
+description: "Graphs the number of susceptible individuals over time, with option to compare results of different step sizes."
+location: "P. 69, section 2.1."
 categories: [In review]
 ---
 

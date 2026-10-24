@@ -13,7 +13,11 @@
       "/apps/09-plot.html",
       "/apps/10-newton.html",
       "/apps/11-riemann.html",
-      "/apps/12-taylor.html"
+      "/apps/12-taylor.html",
+      "/apps/13-sirseries.html",
+      "/apps/14-harmonic.html",
+      "/apps/15-detector.html",
+      "/apps/16-power.html"
     ]
   }
 ]

@@ -1,8 +1,10 @@
 ---
 title: "SIR"
-description: "Runs the SIR program day by day, with a table and graph of S, I and R."
+description: "Calculates values of S, I, and R."
+location: "P. 50, section 1.3"
 categories: [In review]
 ---
+**Do I need to cite the textbook if I pull the first sentence of the description from the textbook?**
 
 This page runs the SIR (susceptible, infected, recovered) program from the BASIC
 listing below, rewritten in Python. The Python runs right here in your browser, and

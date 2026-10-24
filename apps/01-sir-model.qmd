@@ -1,5 +1,5 @@
 ---
-title: "SIR model: from BASIC to Python"
+title: "SIR"
 description: "Runs the SIR program day by day, with a table and graph of S, I and R."
 categories: [In review]
 ---

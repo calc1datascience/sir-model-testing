@@ -1,5 +1,5 @@
 ---
-title: "Graphing a Taylor polynomial"
+title: "TAYLOR"
 description: "Graphs the degree-17 Taylor polynomial for sin x from x = 0 to 3.14."
 categories: [In review]
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Graphing S until the peak: a DO-WHILE loop"
+title: "DOWHILE"
 description: "Graphs S step by step until the number of infected people stops growing, then prints the time."
 categories: [In review]
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Graphing S: from BASIC to Python"
+title: "SIRPLOT"
 description: "Graphs S over three days as a chain of short line segments."
 categories: [In review]
 ---

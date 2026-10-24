@@ -1,5 +1,5 @@
 ---
-title: "A sequence of approximations: nested loops and color"
+title: "SEQUENCE"
 description: "Graphs Euler's method for a logistic equation 14 times, doubling the number of steps each time and drawing each run in its own color."
 categories: [In review]
 ---

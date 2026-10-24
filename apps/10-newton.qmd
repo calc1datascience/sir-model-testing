@@ -1,5 +1,5 @@
 ---
-title: "Newton's method"
+title: "NEWTON"
 description: "Finds a root of 4x^3 + 3x^2 + 2x + 1 = 0 by following tangent lines, starting from x = -1."
 categories: [In review]
 ---

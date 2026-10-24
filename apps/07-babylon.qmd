@@ -1,5 +1,5 @@
 ---
-title: "The Babylonian method for square roots"
+title: "BABYLON"
 description: "Finds the square root of 5 by repeatedly averaging a guess x with 5 / x."
 categories: [In review]
 ---

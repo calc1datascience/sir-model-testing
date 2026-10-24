@@ -1,5 +1,5 @@
 ---
-title: "SIRVALUE: from BASIC to Python"
+title: "SIRVALUE"
 description: "Estimates S, I and R at a single later time using several Euler steps."
 categories: [In review]
 ---

@@ -8,7 +8,7 @@
 
 <meta name="description" content="Runs the SIR program day by day, with a table and graph of S, I and R.">
 
-<title>SIR model: from BASIC to Python – SIR Models: from BASIC to Python</title>
+<title>SIR – SIR Models: from BASIC to Python</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -117,7 +117,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">SIR model: from BASIC to Python</h1>
+<h1 class="title">SIR</h1>
   <div class="quarto-categories">
     <div class="quarto-category">In review</div>
   </div>
@@ -142,7 +142,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<nav class="app-nav app-nav-top" aria-label="App navigation"><span></span><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="02-sir-value.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">SIRVALUE: from BASIC to Python</span></a></nav>
+<nav class="app-nav app-nav-top" aria-label="App navigation"><span></span><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="02-sir-value.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">SIRVALUE</span></a></nav>
 <p>This page runs the SIR (susceptible, infected, recovered) program from the BASIC listing below, rewritten in Python. The Python runs right here in your browser, and the table and graph show whatever the program prints. Edit the code and press <strong>Run</strong> to update them; <strong>Reset</strong> brings back the original program.</p>
 <p>The model: each day, susceptible people become infected at a rate of a × S × I, and infected people recover at a rate of b × I. In the program, <code>a = 0.00001</code> is the transmission coefficient and <code>b = 1 / 14</code> is the recovery coefficient (an illness lasting about two weeks). The program uses Euler’s method: it computes the rates, multiplies by the time step <code>deltat</code>, and adds the changes to S, I and R.</p>
 <section id="notes-from-the-textbook" class="level2 page-columns page-full">
@@ -703,7 +703,7 @@ startWorker();
 </script>
 
 
-<nav class="app-nav app-nav-bottom" aria-label="App navigation"><span></span><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="02-sir-value.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">SIRVALUE: from BASIC to Python</span></a></nav>
+<nav class="app-nav app-nav-bottom" aria-label="App navigation"><span></span><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="02-sir-value.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">SIRVALUE</span></a></nav>
 </section>
 
 </main> <!-- /main -->

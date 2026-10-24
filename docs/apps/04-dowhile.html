@@ -142,7 +142,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<nav class="app-nav app-nav-top" aria-label="App navigation"><a class="app-nav-link app-nav-prev" href="03-sir-plot.html"><span class="app-nav-label">← Previous</span><span class="app-nav-title">Graphing S: from BASIC to Python</span></a><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="05-sequence.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">A sequence of approximations: nested loops and color</span></a></nav>
+<nav class="app-nav app-nav-top" aria-label="App navigation"><a class="app-nav-link app-nav-prev" href="03-sir-plot.html"><span class="app-nav-label">← Previous</span><span class="app-nav-title">SIRPLOT</span></a><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="05-sequence.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">SEQUENCE</span></a></nav>
 <p>This page runs a BASIC program that graphs S, the number of susceptible people, and keeps going until the epidemic reaches its peak. The program is rewritten in Python and runs right here in your browser. Edit the code and press <strong>Run</strong> to redraw the graph; <strong>Reset</strong> brings back the original program.</p>
 <p>The calculation and the drawing are the same as in SIRPLOT: Euler’s method with <code>deltat = 0.01</code>, and <code>LINE (t, S)-(t + deltat, S + deltaS)</code> drawing one short segment per step. What changes is how the program decides when to stop. SIRPLOT used a <code>FOR</code> loop, so it ran a fixed number of steps. This program doesn’t know ahead of time how many steps it needs. Instead it uses <code>DO WHILE Iprime &gt; 0 ... LOOP</code>, which repeats the loop for as long as the number of infected people is still increasing. When <code>Iprime</code> is no longer positive, I has reached its peak, the loop stops, and <code>PRINT t</code> reports when that happened.</p>
 <p>Because the condition is checked at the top of the loop, <code>Iprime</code> has to be given a value before the loop starts, which is why it is calculated once on its own line before <code>DO WHILE</code>. <code>WINDOW (0, 0)-(20, 47000)</code> makes the screen wide and tall enough to hold the whole run: t from 0 to 20 days across and S from 0 to 47,000 up.</p>
@@ -744,7 +744,7 @@ startWorker();
 </script>
 
 
-<nav class="app-nav app-nav-bottom" aria-label="App navigation"><a class="app-nav-link app-nav-prev" href="03-sir-plot.html"><span class="app-nav-label">← Previous</span><span class="app-nav-title">Graphing S: from BASIC to Python</span></a><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="05-sequence.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">A sequence of approximations: nested loops and color</span></a></nav>
+<nav class="app-nav app-nav-bottom" aria-label="App navigation"><a class="app-nav-link app-nav-prev" href="03-sir-plot.html"><span class="app-nav-label">← Previous</span><span class="app-nav-title">SIRPLOT</span></a><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="05-sequence.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">SEQUENCE</span></a></nav>
 </section>
 
 </main> <!-- /main -->

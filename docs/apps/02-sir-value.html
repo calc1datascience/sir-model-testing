@@ -8,7 +8,7 @@
 
 <meta name="description" content="Estimates S, I and R at a single later time using several Euler steps.">
 
-<title>SIRVALUE: from BASIC to Python – SIR Models: from BASIC to Python</title>
+<title>SIRVALUE – SIR Models: from BASIC to Python</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -117,7 +117,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">SIRVALUE: from BASIC to Python</h1>
+<h1 class="title">SIRVALUE</h1>
   <div class="quarto-categories">
     <div class="quarto-category">In review</div>
   </div>
@@ -142,7 +142,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<nav class="app-nav app-nav-top" aria-label="App navigation"><a class="app-nav-link app-nav-prev" href="01-sir-model.html"><span class="app-nav-label">← Previous</span><span class="app-nav-title">SIR model: from BASIC to Python</span></a><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="03-sir-plot.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">Graphing S: from BASIC to Python</span></a></nav>
+<nav class="app-nav app-nav-top" aria-label="App navigation"><a class="app-nav-link app-nav-prev" href="01-sir-model.html"><span class="app-nav-label">← Previous</span><span class="app-nav-title">SIR</span></a><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="03-sir-plot.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">SIRPLOT</span></a></nav>
 <p>This page runs the SIRVALUE program from the BASIC listing below (see page 65), rewritten in Python. The Python runs right here in your browser, and the table shows whatever the program prints. Edit the code and press <strong>Run</strong> to update it; <strong>Reset</strong> brings back the original program.</p>
 <p>The model is the same as before: susceptible people become infected at a rate of a × S × I, and infected people recover at a rate of b × I, with <code>a = 0.00001</code> and <code>b = 1 / 14</code>. What’s new is the goal. Instead of printing a value every day, SIRVALUE estimates S, I and R at a single later time, <code>tfinal = 1</code>. It gets there by splitting the interval from <code>tinitial</code> to <code>tfinal</code> into <code>numberofsteps = 10</code> equal steps, so <code>deltat = (1 - 0) / 10 = 0.1</code>, and taking one Euler step for each.</p>
 <section id="notes-from-the-textbook" class="level2 page-columns page-full">
@@ -590,7 +590,7 @@ startWorker();
 </script>
 
 
-<nav class="app-nav app-nav-bottom" aria-label="App navigation"><a class="app-nav-link app-nav-prev" href="01-sir-model.html"><span class="app-nav-label">← Previous</span><span class="app-nav-title">SIR model: from BASIC to Python</span></a><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="03-sir-plot.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">Graphing S: from BASIC to Python</span></a></nav>
+<nav class="app-nav app-nav-bottom" aria-label="App navigation"><a class="app-nav-link app-nav-prev" href="01-sir-model.html"><span class="app-nav-label">← Previous</span><span class="app-nav-title">SIR</span></a><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="03-sir-plot.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">SIRPLOT</span></a></nav>
 </section>
 
 </main> <!-- /main -->

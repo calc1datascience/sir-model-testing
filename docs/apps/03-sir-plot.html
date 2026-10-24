@@ -8,7 +8,7 @@
 
 <meta name="description" content="Graphs S over three days as a chain of short line segments.">
 
-<title>Graphing S: from BASIC to Python – SIR Models: from BASIC to Python</title>
+<title>SIRPLOT – SIR Models: from BASIC to Python</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -117,7 +117,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Graphing S: from BASIC to Python</h1>
+<h1 class="title">SIRPLOT</h1>
   <div class="quarto-categories">
     <div class="quarto-category">In review</div>
   </div>
@@ -142,7 +142,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<nav class="app-nav app-nav-top" aria-label="App navigation"><a class="app-nav-link app-nav-prev" href="02-sir-value.html"><span class="app-nav-label">← Previous</span><span class="app-nav-title">SIRVALUE: from BASIC to Python</span></a><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="04-dowhile.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">Graphing S until the peak: a DO-WHILE loop</span></a></nav>
+<nav class="app-nav app-nav-top" aria-label="App navigation"><a class="app-nav-link app-nav-prev" href="02-sir-value.html"><span class="app-nav-label">← Previous</span><span class="app-nav-title">SIRVALUE</span></a><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="04-dowhile.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">DOWHILE</span></a></nav>
 <p>This page runs a BASIC program that graphs S, the number of susceptible people, over three days. The program is rewritten in Python and runs right here in your browser. Edit the code and press <strong>Run</strong> to redraw the graph; <strong>Reset</strong> brings back the original program.</p>
 <p>The calculation is the same Euler’s method as in SIRVALUE, now with <code>tfinal = 3</code> and <code>numberofsteps = 30</code>, so <code>deltat = 0.1</code>. The new part is the drawing. On each pass through the loop, <code>LINE (t, S)-(t + deltat, S + deltaS)</code> draws a straight segment from the current point to the next one, and together the 30 segments form a piecewise-linear approximation to the graph of S. <code>WINDOW (0, 40000)-(3, 45400)</code> sets the coordinates of the screen, so t runs from 0 to 3 across and S runs from 40,000 to 45,400 up. (<code>SCREEN 12</code> just switches the computer into graphics mode.)</p>
 <p>In the Python, <code>window(...)</code> and <code>line(...)</code> do the same jobs as <code>WINDOW</code> and <code>LINE</code>. Try setting <code>numberofsteps</code> to 3 to see the individual segments, or to 300 for a smoother curve.</p>
@@ -735,7 +735,7 @@ startWorker();
 </script>
 
 
-<nav class="app-nav app-nav-bottom" aria-label="App navigation"><a class="app-nav-link app-nav-prev" href="02-sir-value.html"><span class="app-nav-label">← Previous</span><span class="app-nav-title">SIRVALUE: from BASIC to Python</span></a><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="04-dowhile.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">Graphing S until the peak: a DO-WHILE loop</span></a></nav>
+<nav class="app-nav app-nav-bottom" aria-label="App navigation"><a class="app-nav-link app-nav-prev" href="02-sir-value.html"><span class="app-nav-label">← Previous</span><span class="app-nav-title">SIRVALUE</span></a><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="04-dowhile.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">DOWHILE</span></a></nav>
 </section>
 
 </main> <!-- /main -->

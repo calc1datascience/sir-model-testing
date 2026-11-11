@@ -20,3 +20,6 @@ format:
 filters:
   - _app-nav.lua
 
+comments:
+  hypothesis: true
+

@@ -1,0 +1,111 @@
+---
+title: "Python basics"
+description: "A quick reference to the Python used on this site, with the BASIC it replaces."
+---
+
+The programs on this site were first written in BASIC and have been rewritten in Python.
+This page lists the pieces of Python you'll see in them, next to the BASIC they replace.
+
+## Arithmetic
+
+| Python | BASIC | What it does | Example |
+|---|---|---|---|
+| `+` | `+` | Add | `2 + 3` gives `5` |
+| `-` | `-` | Subtract, or make a number negative | `5 - 2` gives `3` |
+| `*` | `*` | Multiply | `4 * 3` gives `12` |
+| `/` | `/` | Divide | `7 / 2` gives `3.5` |
+| `**` | `^` | Raise to a power | `2 ** 3` gives `8` |
+| `//` | `\` | Divide and round down to a whole number | `7 // 2` gives `3` |
+| `%` | `MOD` | Remainder after dividing | `7 % 2` gives `1` |
+
+Python follows the usual order of operations: powers first, then multiplication and
+division, then addition and subtraction. Use parentheses when in doubt. One surprise:
+`-2 ** 2` is `-4`, because the power is done before the minus sign. Write `(-2) ** 2` to get `4`.
+
+## Setting and changing variables
+
+| Python | BASIC | What it does |
+|---|---|---|
+| `x = 5` | `x = 5` | Store 5 in `x` |
+| `x += 1` | `x = x + 1` | Add 1 to `x` |
+| `x -= 2` | `x = x - 2` | Subtract 2 from `x` |
+| `x *= 3` | `x = x * 3` | Multiply `x` by 3 |
+| `x /= 4` | `x = x / 4` | Divide `x` by 4 |
+
+The programs here mostly use the longer form, like `t = t + deltat`, to match the BASIC.
+The two forms do the same thing.
+
+::: {.callout-warning}
+## There is no `++` in Python
+
+Some languages use `x++` to add 1 to `x`. Python doesn't have it: `x++` is an error, and
+`++x` quietly does nothing (it means "plus plus x", which is just `x`). Use `x += 1` or
+`x = x + 1`.
+:::
+
+## Comparing values
+
+These give `True` or `False`, and are used with `if` and `while`.
+
+| Python | BASIC | Means |
+|---|---|---|
+| `==` | `=` | equal to |
+| `!=` | `<>` | not equal to |
+| `<`, `>` | `<`, `>` | less than, greater than |
+| `<=`, `>=` | `<=`, `>=` | less than or equal to, greater than or equal to |
+| `and`, `or`, `not` | `AND`, `OR`, `NOT` | combine or reverse conditions |
+
+BASIC uses `=` both to store a value and to compare two values. Python keeps them apart:
+one `=` stores, two `==` compare.
+
+## Math functions
+
+Add `import math` at the top of a program to use these.
+
+| Python | BASIC | What it does |
+|---|---|---|
+| `math.sqrt(x)` | `SQR(x)` | Square root |
+| `math.sin(x)`, `math.cos(x)`, `math.tan(x)` | `SIN`, `COS`, `TAN` | Trig functions, with x in radians |
+| `math.atan(x)` | `ATN(x)` | Inverse tangent |
+| `math.exp(x)` | `EXP(x)` | $e^x$ |
+| `math.log(x)` | `LOG(x)` | Natural logarithm |
+| `abs(x)` | `ABS(x)` | Absolute value |
+| `math.floor(x)` | `INT(x)` | Round down to a whole number |
+| `math.pi` | `4 * ATN(1)` | π |
+
+## Loops, conditions and functions
+
+| Python | BASIC |
+|---|---|
+| `for k in range(1, 11):` | `FOR k = 1 TO 10` ... `NEXT k` |
+| `while I > 0:` | `DO WHILE I > 0` ... `LOOP` |
+| `if x > 0:` ... `else:` | `IF x > 0 THEN` ... `ELSE` ... `END IF` |
+| `def f(t):` ... `return 3 * t` | `FUNCTION f (t)` ... `f = 3 * t` ... `END FUNCTION` |
+| `print(t, S)` | `PRINT t, S` |
+| `# a comment` | `' a comment` or `REM a comment` |
+
+`range(1, 11)` counts 1, 2, …, 10: it stops *before* the second number. That's why
+`FOR k = 1 TO steps` becomes `range(1, steps + 1)`.
+
+Python has no `NEXT`, `LOOP` or `END IF`. Instead, the lines that belong inside a loop,
+`if` or function are **indented** (moved right, usually by four spaces), and the block ends
+where the indenting stops. The line that starts a block ends with a colon `:`.
+
+```python
+for k in range(1, 4):
+    S = S + deltaS      # indented: repeated 3 times
+    print(t, S)         # indented: repeated 3 times
+print("done")           # not indented: runs once, after the loop
+```
+
+## Drawing on this site
+
+These aren't part of standard Python. Each page that draws a graph adds them to stand in
+for BASIC's graphics commands.
+
+| Python on this site | BASIC | What it does |
+|---|---|---|
+| `window((x1, y1), (x2, y2))` | `WINDOW (x1, y1)-(x2, y2)` | Set the part of the plane the graph shows |
+| `line((x1, y1), (x2, y2))` | `LINE (x1, y1)-(x2, y2)` | Draw a straight segment |
+| `line((x1, y1), (x2, y2), c)` | `LINE (x1, y1)-(x2, y2), c` | Draw a segment in color number c (0 to 15) |
+| `color(f, b)` | `COLOR f, b` | Set the drawing color (the background here is always white) |

@@ -81,6 +81,35 @@ ul.task-list li input[type="checkbox"] {
   });
 </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -151,7 +180,97 @@ ul.task-list li input[type="checkbox"] {
 <nav class="app-nav app-nav-top" aria-label="App navigation"><span></span><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="02-sir-value.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">SIRVALUE</span></a></nav>
 <p><strong>Do I need to cite the textbook if I pull the first sentence of the description from the textbook?</strong></p>
 <p>This page runs the SIR (susceptible, infected, recovered) program from the BASIC listing below, rewritten in Python. The Python runs right here in your browser, and the table and graph show whatever the program prints. Edit the code and press <strong>Run</strong> to update them; <strong>Reset</strong> brings back the original program.</p>
-<p>The model: each day, susceptible people become infected at a rate of a × S × I, and infected people recover at a rate of b × I. In the program, <code>a = 0.00001</code> is the transmission coefficient and <code>b = 1 / 14</code> is the recovery coefficient (an illness lasting about two weeks). The program uses Euler’s method: it computes the rates, multiplies by the time step <code>deltat</code>, and adds the changes to S, I and R.</p>
+<section id="what-is-the-sir-model" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-the-sir-model">What is the SIR model?</h2>
+<p>The <strong>SIR model</strong> is a compartmental model used in epidemiology to predict how an infectious disease spreads through a population. The population is divided into three groups whose sizes change over time <em>t</em>:</p>
+<ul>
+<li><strong>Susceptible (S):</strong> healthy people who don’t have the disease yet and can catch it.</li>
+<li><strong>Infected (I):</strong> people who have the disease and can pass it on.</li>
+<li><strong>Recovered (R):</strong> people who have recovered, can no longer pass it on, and are immune.</li>
+</ul>
+</section>
+<section id="the-rate-equations" class="level2">
+<h2 class="anchored" data-anchor-id="the-rate-equations">The rate equations</h2>
+<p>People move between the groups at these rates:</p>
+<p><span class="math display">\[
+\begin{aligned}
+S' &amp;= -a\,S\,I \\
+I' &amp;= a\,S\,I - b\,I \\
+R' &amp;= b\,I
+\end{aligned}
+\]</span></p>
+</section>
+<section id="model-parameters" class="level2">
+<h2 class="anchored" data-anchor-id="model-parameters">Model parameters</h2>
+<p><strong>Transmission coefficient (a):</strong> how contagious the disease is, per contact between a susceptible and an infected person. The program uses <code>a = 0.00001</code>.</p>
+<p><strong>Recovery coefficient (b):</strong> the fraction of infected people who recover each day. It equals 1/<em>d</em>, where <em>d</em> is the average length of the illness in days. The program uses <code>b = 1 / 14</code>, an illness lasting about two weeks.</p>
+</section>
+<section id="eulers-method" class="level2">
+<h2 class="anchored" data-anchor-id="eulers-method">Euler’s method</h2>
+<p>The program can’t solve the equations exactly, so it takes small steps of length <span class="math inline">\(\Delta t\)</span>. At each step it computes the rates, multiplies by <span class="math inline">\(\Delta t\)</span>, and adds the changes:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\Delta S &amp;= S'\,\Delta t, &amp; S_{\text{new}} &amp;= S + \Delta S \\
+\Delta I &amp;= I'\,\Delta t, &amp; I_{\text{new}} &amp;= I + \Delta I \\
+\Delta R &amp;= R'\,\Delta t, &amp; R_{\text{new}} &amp;= R + \Delta R \\
+&amp;&amp; t_{\text{new}} &amp;= t + \Delta t
+\end{aligned}
+\]</span></p>
+</section>
+<section id="try-it-change-the-parameters" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="try-it-change-the-parameters">Try it: change the parameters</h2>
+<style>
+  .sir-dashboard { background: #fff; border: 1px solid #d9dde3; border-radius: 8px; padding: 1.25rem;
+                   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); margin: 1rem 0 2rem; }
+  .sir-controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem 1.5rem;
+                       margin-bottom: 1.25rem; background: #f8fafc; padding: 1.1rem 1.25rem; border-radius: 6px;
+                       border: 1px solid #e2e8f0; }
+  .sir-control-group label { font-size: 0.875rem; font-weight: 600; color: #1e293b; display: flex;
+                             justify-content: space-between; gap: 0.5rem; margin-bottom: 0.35rem; }
+  .sir-control-group label span { font-weight: 500; color: #475569; font-variant-numeric: tabular-nums; }
+  .sir-control-group input[type="range"] { width: 100%; accent-color: #1f5f99; cursor: pointer; }
+  #sim-warn:not(:empty) { background: #fff7e6; border: 1px solid #f0d49a; color: #6b4a00; border-radius: 6px;
+                          padding: 0.55rem 0.8rem; margin-top: 0.75rem; }
+</style>
+
+<section class="column-page sir-dashboard">
+  <p class="sir-hint">Move the sliders to change the model. This graph runs the same Euler steps as the
+    program below, so it updates instantly. Hover over the graph to read the values.</p>
+
+  <div class="sir-controls-grid">
+    <div class="sir-control-group">
+      <label for="slider-a">Transmission coefficient a <span id="val-a"></span></label>
+      <input type="range" id="slider-a" min="0.000001" max="0.00005" step="0.000001" value="0.00001">
+    </div>
+    <div class="sir-control-group">
+      <label for="slider-d">Illness length d <span id="val-d"></span></label>
+      <input type="range" id="slider-d" min="1" max="60" step="1" value="14">
+    </div>
+    <div class="sir-control-group">
+      <label for="slider-s0">Starting susceptible S₀ <span id="val-s0"></span></label>
+      <input type="range" id="slider-s0" min="10000" max="100000" step="100" value="45400">
+    </div>
+    <div class="sir-control-group">
+      <label for="slider-i0">Starting infected I₀ <span id="val-i0"></span></label>
+      <input type="range" id="slider-i0" min="100" max="10000" step="100" value="2100">
+    </div>
+    <div class="sir-control-group">
+      <label for="slider-dt">Step size Δt <span id="val-dt"></span></label>
+      <input type="range" id="slider-dt" min="0.1" max="2" step="0.1" value="1">
+    </div>
+    <div class="sir-control-group">
+      <label for="slider-days">Number of days <span id="val-days"></span></label>
+      <input type="range" id="slider-days" min="10" max="200" step="5" value="50">
+    </div>
+  </div>
+
+  <div class="sir-legend" id="sim-legend"></div>
+  <div class="sir-chart" id="sim-chart"></div>
+  <p class="sir-note" id="sim-warn" role="status"></p>
+  <p class="sir-note">R starts at 2,500, as in the program. With a large step size, Euler's method can
+    overshoot, and the values can even go below zero.</p>
+</section>
+</section>
 <section id="notes-from-the-textbook" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="notes-from-the-textbook">Notes from the textbook</h2>
 <!-- Write your notes from the textbook below, in ordinary Markdown,
@@ -213,8 +332,8 @@ ul.task-list li input[type="checkbox"] {
   /* ---------- graph ---------- */
   .sir-graph-title { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.25rem; }
   .sir-legend { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; font-size: 0.875rem; margin: 0.25rem 0 0.4rem; }
-  .sir-sw { display: inline-block; width: 12px; height: 3px; border-radius: 2px; margin-right: 0.4rem; vertical-align: 0.25em; }
-  .sir-chart { position: relative; border: 1px solid #d9dde3; border-radius: 6px; padding: 6px 4px 0; transition: opacity 0.2s; }
+  .sir-sw { display: inline-block; vertical-align: middle; margin-right: 0.4rem; }
+  .sir-chart { position: relative; background: #fff; border: 1px solid #d9dde3; border-radius: 6px; padding: 6px 4px 0; transition: opacity 0.2s; }
   .sir-chart.stale { opacity: 0.45; }
   .sir-chart svg { width: 100%; height: auto; display: block; touch-action: pan-y; }
   .sir-chart text { font-size: 12px; fill: #5b6573; font-family: inherit; font-variant-numeric: tabular-nums; }
@@ -277,7 +396,7 @@ ul.task-list li input[type="checkbox"] {
 
     <div class="sir-graph-title">Graph</div>
     <p class="sir-hint">Straight segments join consecutive printed points, so each curve is piecewise linear.
-      The first number in each row is the horizontal axis.</p>
+      The first number in each row is the horizontal axis. Each curve has its own color, line pattern and point shape.</p>
     <div class="sir-legend" id="sir-legend"></div>
     <div class="sir-chart" id="sir-chart">
       <div class="sir-empty">The graph appears once the program runs.</div>
@@ -608,7 +727,29 @@ function renderOutput(lines, truncated) {
 // ------------------------------------------------------------------
 // Graph: piecewise linear curves (straight lines between printed points), drawn as SVG.
 // ------------------------------------------------------------------
-const COLORS = ["#1f5f99", "#c0392b", "#2e8b57", "#8e44ad", "#d68910", "#4b5563"];
+const COLORS = ["#1f5f99", "#c0392b", "#2e8b57", "#8e44ad", "#a86200", "#4b5563"];
+// Each curve also gets its own line pattern and point shape, so the curves can be told apart
+// without relying on color. Dash lengths assume round caps.
+const DASHES = ["", "8 5", "0.1 5", "10 5 0.1 5", "18 6", "4 5"];
+const MARKERS = ["circle", "square", "triangle", "diamond", "triangle-down", "cross"];
+
+function marker(shape, x, y, color, r = 3.5) {
+  const n = v => v.toFixed(1);
+  const poly = pts => `<polygon points="${pts.map(([a, b]) => `${n(x + a * r)},${n(y + b * r)}`).join(" ")}" fill="${color}"/>`;
+  switch (shape) {
+    case "square": return `<rect x="${n(x - r * 0.9)}" y="${n(y - r * 0.9)}" width="${n(r * 1.8)}" height="${n(r * 1.8)}" fill="${color}"/>`;
+    case "triangle": return poly([[0, -1.25], [1.15, 0.85], [-1.15, 0.85]]);
+    case "diamond": return poly([[0, -1.3], [1.15, 0], [0, 1.3], [-1.15, 0]]);
+    case "triangle-down": return poly([[0, 1.25], [1.15, -0.85], [-1.15, -0.85]]);
+    case "cross": return `<path d="M${n(x - r)},${n(y - r)}L${n(x + r)},${n(y + r)}M${n(x - r)},${n(y + r)}L${n(x + r)},${n(y - r)}" stroke="${color}" stroke-width="2"/>`;
+    default: return `<circle cx="${n(x)}" cy="${n(y)}" r="${r}" fill="${color}"/>`;
+  }
+}
+
+function swatch(sr) {
+  const dash = sr.dash ? ` stroke-dasharray="${sr.dash}"` : "";
+  return `<svg class="sir-sw" width="36" height="12" aria-hidden="true"><path d="M3,6L33,6" stroke="${sr.color}" stroke-width="2.25" stroke-linecap="round"${dash}/>${marker(sr.shape, 18, 6, sr.color, 3)}</svg>`;
+}
 
 function niceTicks(lo, hi, count) {
   if (!(hi > lo)) hi = lo + 1;
@@ -623,91 +764,166 @@ function niceTicks(lo, hi, count) {
   return { lo: start, hi: end, ticks };
 }
 
-let lastChart = null;
-let lastChartWidth = 0;
-new ResizeObserver(() => {
-  const w = chartWrap.clientWidth;
-  if (lastChart && w !== lastChartWidth) { lastChartWidth = w; renderChart(...lastChart); }
-}).observe(chartWrap);
+// One chart drawer per graph on the page, each redrawing itself when its box resizes.
+function makeChart(wrap, legend) {
+  let last = null, lastWidth = 0;
+  new ResizeObserver(() => {
+    const w = wrap.clientWidth;
+    if (last && w !== lastWidth) { lastWidth = w; draw(...last); }
+  }).observe(wrap);
 
-function renderChart(heads, rows) {
-  lastChart = [heads, rows];
-  const cols = Math.max(0, ...rows.map(r => r.length));
-  if (rows.length < 2 || cols < 2) {
-    legendEl.innerHTML = "";
-    chartWrap.innerHTML = `<div class="sir-empty">The graph needs at least two printed rows, each with two or more numbers.</div>`;
-    return;
-  }
-  const W = Math.max(260, chartWrap.clientWidth - 8);
-  const H = Math.round(Math.min(380, Math.max(240, W * 0.62)));
-  const M = { l: 62, r: 16, t: 12, b: 44 };
-  const series = [];
-  for (let c = 1; c < cols; c++) {
-    series.push({
-      name: heads[c], col: c, color: COLORS[(c - 1) % COLORS.length],
-      pts: rows.filter(r => r[c] !== undefined).map(r => [r[0], r[c]])
+  // opts.xRange = [lo, hi] fixes the horizontal axis instead of fitting it to the data.
+  function draw(heads, rows, opts = {}) {
+    last = [heads, rows, opts];
+    const cols = Math.max(0, ...rows.map(r => r.length));
+    if (rows.length < 2 || cols < 2) {
+      legend.innerHTML = "";
+      wrap.innerHTML = `<div class="sir-empty">The graph needs at least two printed rows, each with two or more numbers.</div>`;
+      return;
+    }
+    const W = Math.max(260, wrap.clientWidth - 8);
+    const H = Math.round(Math.min(380, Math.max(240, W * 0.62)));
+    const M = { l: 62, r: 16, t: 12, b: 44 };
+    const series = [];
+    for (let c = 1; c < cols; c++) {
+      series.push({
+        name: heads[c], col: c, color: COLORS[(c - 1) % COLORS.length],
+        dash: DASHES[(c - 1) % DASHES.length], shape: MARKERS[(c - 1) % MARKERS.length],
+        pts: rows.filter(r => r[c] !== undefined).map(r => [r[0], r[c]])
+      });
+    }
+    const xs = rows.map(r => r[0]);
+    const ys = series.flatMap(sr => sr.pts.map(p => p[1]));
+    const xT = opts.xRange
+      ? { lo: opts.xRange[0], hi: opts.xRange[1],
+          ticks: niceTicks(opts.xRange[0], opts.xRange[1], 6).ticks
+                   .filter(v => v >= opts.xRange[0] - 1e-9 && v <= opts.xRange[1] + 1e-9) }
+      : niceTicks(Math.min(...xs), Math.max(...xs), 6);
+    const yT = niceTicks(Math.min(0, ...ys), Math.max(...ys), 5);
+    const sx = x => M.l + (x - xT.lo) / (xT.hi - xT.lo) * (W - M.l - M.r);
+    const sy = y => H - M.b - (y - yT.lo) / (yT.hi - yT.lo) * (H - M.t - M.b);
+    const f1 = v => v.toFixed(1);
+
+    let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Line graph of ${esc(series.map(sr => sr.name).join(", "))} against ${esc(heads[0])}">`;
+    for (const v of yT.ticks) {
+      svg += `<line class="grid" x1="${M.l}" x2="${W - M.r}" y1="${f1(sy(v))}" y2="${f1(sy(v))}"/>`;
+      svg += `<text x="${M.l - 8}" y="${f1(sy(v))}" dy="0.32em" text-anchor="end">${fmt.format(v)}</text>`;
+    }
+    for (const v of xT.ticks) {
+      svg += `<line class="axis" x1="${f1(sx(v))}" x2="${f1(sx(v))}" y1="${H - M.b}" y2="${H - M.b + 5}"/>`;
+      svg += `<text x="${f1(sx(v))}" y="${H - M.b + 18}" text-anchor="middle">${fmt.format(v)}</text>`;
+    }
+    svg += `<line class="axis" x1="${M.l}" x2="${W - M.r}" y1="${H - M.b}" y2="${H - M.b}"/>`;
+    svg += `<text x="${(M.l + W - M.r) / 2}" y="${H - 6}" text-anchor="middle">${esc(heads[0])}</text>`;
+    const showDots = rows.length <= 60;
+    for (const sr of series) {
+      const d = sr.pts.map((p, i) => `${i ? "L" : "M"}${f1(sx(p[0]))},${f1(sy(p[1]))}`).join("");
+      const dash = sr.dash ? ` stroke-dasharray="${sr.dash}"` : "";
+      svg += `<path d="${d}" fill="none" stroke="${sr.color}" stroke-width="2.25" stroke-linejoin="round" stroke-linecap="round"${dash}/>`;
+      if (showDots) for (const p of sr.pts) svg += marker(sr.shape, sx(p[0]), sy(p[1]), sr.color);
+    }
+    svg += `<line class="hover-rule" y1="${M.t}" y2="${H - M.b}" style="display:none"/>`;
+    svg += `<rect x="${M.l}" y="${M.t}" width="${W - M.l - M.r}" height="${H - M.t - M.b}" fill="transparent"/></svg>`;
+
+    legend.innerHTML = series.map(sr =>
+      `<span>${swatch(sr)}${esc(sr.name)}</span>`).join("");
+    wrap.innerHTML = svg + `<div class="sir-tip" hidden></div>`;
+
+    // Hover (or touch) to read the values at the nearest printed point.
+    const svgEl = wrap.querySelector("svg"), rule = svgEl.querySelector(".hover-rule");
+    const tip = wrap.querySelector(".sir-tip");
+    svgEl.addEventListener("pointermove", e => {
+      const box = svgEl.getBoundingClientRect();
+      const vx = (e.clientX - box.left) * W / box.width;
+      let best = 0, bestDist = Infinity;
+      rows.forEach((r, i) => { const dd = Math.abs(sx(r[0]) - vx); if (dd < bestDist) { bestDist = dd; best = i; } });
+      const row = rows[best], px = sx(row[0]);
+      rule.setAttribute("x1", px);
+      rule.setAttribute("x2", px);
+      rule.style.display = "";
+      tip.innerHTML = `<strong>${esc(heads[0])} = ${fmt.format(row[0])}</strong>` + series.map(sr =>
+        row[sr.col] === undefined ? "" :
+        `<div>${swatch(sr)}${esc(sr.name)}: ${fmt.format(row[sr.col])}</div>`).join("");
+      tip.hidden = false;
+      const scale = box.width / W, left = px * scale + 4;
+      tip.style.left = (left + tip.offsetWidth + 14 > box.width ? left - tip.offsetWidth - 14 : left + 14) + "px";
     });
+    svgEl.addEventListener("pointerleave", () => { rule.style.display = "none"; tip.hidden = true; });
   }
-  const xs = rows.map(r => r[0]);
-  const ys = series.flatMap(sr => sr.pts.map(p => p[1]));
-  const xT = niceTicks(Math.min(...xs), Math.max(...xs), 6);
-  const yT = niceTicks(Math.min(0, ...ys), Math.max(...ys), 5);
-  const sx = x => M.l + (x - xT.lo) / (xT.hi - xT.lo) * (W - M.l - M.r);
-  const sy = y => H - M.b - (y - yT.lo) / (yT.hi - yT.lo) * (H - M.t - M.b);
-  const f1 = v => v.toFixed(1);
-
-  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Line graph of ${esc(series.map(sr => sr.name).join(", "))} against ${esc(heads[0])}">`;
-  for (const v of yT.ticks) {
-    svg += `<line class="grid" x1="${M.l}" x2="${W - M.r}" y1="${f1(sy(v))}" y2="${f1(sy(v))}"/>`;
-    svg += `<text x="${M.l - 8}" y="${f1(sy(v))}" dy="0.32em" text-anchor="end">${fmt.format(v)}</text>`;
-  }
-  for (const v of xT.ticks) {
-    svg += `<line class="axis" x1="${f1(sx(v))}" x2="${f1(sx(v))}" y1="${H - M.b}" y2="${H - M.b + 5}"/>`;
-    svg += `<text x="${f1(sx(v))}" y="${H - M.b + 18}" text-anchor="middle">${fmt.format(v)}</text>`;
-  }
-  svg += `<line class="axis" x1="${M.l}" x2="${W - M.r}" y1="${H - M.b}" y2="${H - M.b}"/>`;
-  svg += `<text x="${(M.l + W - M.r) / 2}" y="${H - 6}" text-anchor="middle">${esc(heads[0])}</text>`;
-  const showDots = rows.length <= 60;
-  for (const sr of series) {
-    const d = sr.pts.map((p, i) => `${i ? "L" : "M"}${f1(sx(p[0]))},${f1(sy(p[1]))}`).join("");
-    svg += `<path d="${d}" fill="none" stroke="${sr.color}" stroke-width="2.25" stroke-linejoin="round" stroke-linecap="round"/>`;
-    if (showDots) for (const p of sr.pts)
-      svg += `<circle cx="${f1(sx(p[0]))}" cy="${f1(sy(p[1]))}" r="3.5" fill="${sr.color}"/>`;
-  }
-  svg += `<line class="hover-rule" y1="${M.t}" y2="${H - M.b}" style="display:none"/>`;
-  svg += `<rect x="${M.l}" y="${M.t}" width="${W - M.l - M.r}" height="${H - M.t - M.b}" fill="transparent"/></svg>`;
-
-  legendEl.innerHTML = series.map(sr =>
-    `<span><span class="sir-sw" style="background:${sr.color}"></span>${esc(sr.name)}</span>`).join("");
-  chartWrap.innerHTML = svg + `<div class="sir-tip" hidden></div>`;
-
-  // Hover (or touch) to read the values at the nearest printed point.
-  const svgEl = chartWrap.querySelector("svg"), rule = svgEl.querySelector(".hover-rule");
-  const tip = chartWrap.querySelector(".sir-tip");
-  svgEl.addEventListener("pointermove", e => {
-    const box = svgEl.getBoundingClientRect();
-    const vx = (e.clientX - box.left) * W / box.width;
-    let best = 0, bestDist = Infinity;
-    rows.forEach((r, i) => { const dd = Math.abs(sx(r[0]) - vx); if (dd < bestDist) { bestDist = dd; best = i; } });
-    const row = rows[best], px = sx(row[0]);
-    rule.setAttribute("x1", px);
-    rule.setAttribute("x2", px);
-    rule.style.display = "";
-    tip.innerHTML = `<strong>${esc(heads[0])} = ${fmt.format(row[0])}</strong>` + series.map(sr =>
-      row[sr.col] === undefined ? "" :
-      `<div><span class="sir-sw" style="background:${sr.color}"></span>${esc(sr.name)}: ${fmt.format(row[sr.col])}</div>`).join("");
-    tip.hidden = false;
-    const scale = box.width / W, left = px * scale + 4;
-    tip.style.left = (left + tip.offsetWidth + 14 > box.width ? left - tip.offsetWidth - 14 : left + 14) + "px";
-  });
-  svgEl.addEventListener("pointerleave", () => { rule.style.display = "none"; tip.hidden = true; });
+  return draw;
 }
+const renderChart = makeChart(chartWrap, legendEl);
+
+// ------------------------------------------------------------------
+// Slider simulation: the same Euler steps as the program, in JavaScript.
+// ------------------------------------------------------------------
+const drawSim = makeChart($("sim-chart"), $("sim-legend"));
+const sliders = ["a", "d", "s0", "i0", "dt", "days"].map(k => $("slider-" + k));
+const numFmt = new Intl.NumberFormat("en-US");
+
+function runSimulation() {
+  const [a, d, S0, I0, deltat, days] = sliders.map(s => Number(s.value));
+  const b = 1 / d;
+  $("val-a").textContent = String(Number(a.toPrecision(2)));
+  $("val-d").textContent = `${d} day${d === 1 ? "" : "s"}, b = ${Number(b.toPrecision(2))}`;
+  $("val-s0").textContent = numFmt.format(S0);
+  $("val-i0").textContent = numFmt.format(I0);
+  $("val-dt").textContent = deltat.toFixed(1);
+  $("val-days").textContent = days;
+
+  let t = 0, S = S0, I = I0, R = 2500;
+  const rows = [[t, S, I, R]];
+  // Take only whole steps that end on or before the last day, so t never runs past it.
+  const steps = Math.floor(days / deltat + 1e-9);
+  // If a step is too big, Euler's method can overshoot wildly and the numbers explode.
+  // Stop once any value is far outside the population, so the graph stays readable.
+  const limit = 10 * (S0 + I0 + 2500);
+  let stoppedAt = null, firstNeg = null;
+  for (let k = 1; k <= steps; k++) {
+    const Sprime = -a * S * I;
+    const Iprime = a * S * I - b * I;
+    const Rprime = b * I;
+    t = t + deltat;
+    S = S + Sprime * deltat;
+    I = I + Iprime * deltat;
+    R = R + Rprime * deltat;
+    if (![S, I, R].every(v => Number.isFinite(v) && Math.abs(v) <= limit)) { stoppedAt = t; break; }
+    if (!firstNeg) {
+      const neg = [["S", S], ["I", I], ["R", R]].find(([, v]) => v < 0);
+      if (neg) firstNeg = { name: neg[0], value: neg[1], t };
+    }
+    rows.push([Number(t.toFixed(6)), S, I, R]);
+  }
+  const tStr = v => Number(v.toFixed(2));
+  $("sim-warn").textContent =
+    stoppedAt !== null
+      ? `Stopped at t = ${tStr(stoppedAt)}: the values blew up because the step size is too large ` +
+        `for these settings. Try a smaller step size Δt.`
+    : firstNeg
+      ? `At t = ${tStr(firstNeg.t)}, ${firstNeg.name} went below zero (${numFmt.format(Math.round(firstNeg.value))}). ` +
+        `A population can't be negative: one step of Euler's method overshot. Each step removes the fraction ` +
+        `a × I × Δt of the susceptible people, and once that is more than 1, a step removes more people than ` +
+        `there are. Try a smaller step size Δt.`
+    : "";
+  drawSim(["t (days)", "S", "I", "R"], rows, { xRange: [0, days] });
+}
+sliders.forEach(s => s.addEventListener("input", runSimulation));
+runSimulation();
 
 // ------------------------------------------------------------------
 ta.value = ORIGINAL;
 paint();
 startWorker();
 </script>
+</section>
+<section id="questions" class="level2">
+<h2 class="anchored" data-anchor-id="questions">Questions</h2>
+<ol type="1">
+<li>What does the sum of the three rates, <span class="math inline">\(S' + I' + R'\)</span>, equal in the SIR model? What does that tell you about the population?</li>
+<li>If public health authorities require masks and social distancing, which parameter changes, and how?</li>
+<li>Under what condition will the number of infected people increase?</li>
+<li>Suppose immunity is temporary and lasts 50 days on average (the SIRS model). How does the equation for <span class="math inline">\(S'\)</span> change?</li>
+</ol>
 
 
 <nav class="app-nav app-nav-bottom" aria-label="App navigation"><span></span><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="02-sir-value.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">SIRVALUE</span></a></nav>
@@ -1115,6 +1331,19 @@ startWorker();
   });
   </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Programs adapted from <em>Calculus in Context: The Five College Calculus Project</em> (Callahan, Cox, Hoffman, O’Shea, Pollatsek &amp; Senechal; W. H. Freeman, 1995), rewritten from QBasic into Python to run in your browser.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
 
 
 

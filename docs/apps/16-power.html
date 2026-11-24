@@ -171,7 +171,7 @@ window.Quarto = {
 </header>
 
 
-<nav class="app-nav app-nav-top" aria-label="App navigation"><a class="app-nav-link app-nav-prev" href="15-detector.html"><span class="app-nav-label">← Previous</span><span class="app-nav-title">DETECTOR</span></a><a class="app-nav-home" href="../index.html">All apps</a><span></span></nav>
+<nav class="app-nav app-nav-top" aria-label="App navigation"><a class="app-nav-link app-nav-prev" href="15-detector.html"><span class="app-nav-label">← Previous</span><span class="app-nav-title">DETECTOR</span></a><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="python-basics.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">Python basics</span></a></nav>
 <p>This page runs a BASIC program that graphs a power spectrum: for each frequency ω, how strongly that frequency is present in a function. The program is rewritten in Python and runs right here in your browser. Edit the code and press <strong>Run</strong> to redraw the graph; <strong>Reset</strong> brings back the original program.</p>
 <p>It improves on DETECTOR. The function here, <span class="math inline">\(f(t) = 3\sin(7t - \pi/3)\)</span>, has a phase shift, so it doesn’t line up with <span class="math inline">\(\sin(2\pi\omega t)\)</span> alone. The program therefore measures f against both a sine and a cosine at each frequency:</p>
 <p><span class="math display">\[
@@ -180,7 +180,7 @@ window.Quarto = {
 \]</span></p>
 <p>and combines them as <code>power = SQR(accumS ^ 2 + accumC ^ 2)</code>. Whatever the phase, this comes out near f’s amplitude, 3, at the matching frequency and near 0 elsewhere. The factor 2 is what makes the peak height equal the amplitude, rather than half of it as in DETECTOR.</p>
 <p>The loops work as in DETECTOR: the outer loop moves ω from 0 to 3 in 512 steps, and the inner loop computes both integrals with a 64-piece midpoint sum. After the loops, the last <code>LINE</code> draws a vertical segment in color 6 (brown) at <span class="math inline">\(\omega = 7/(2\pi) \approx 1.114\)</span>, where the peak should be, so you can check that it lines up.</p>
-<p>As in SEQUENCE, <code>COLOR 8, 7</code> draws in dark gray on a light gray background; in the Python that is <code>color(8, 7)</code>, and <code>line(..., 6)</code> gives the marker its color. Try changing the phase <code>math.pi / 3</code> and notice that the peak stays the same height, or add a second term to <code>fnf</code>, such as <code>+ 1.5 * math.sin(3 * t)</code>, and look for its peak at <span class="math inline">\(3/(2\pi) \approx 0.477\)</span>.</p>
+<p>As in SEQUENCE, <code>COLOR 8, 7</code> draws in dark gray on a light gray background; in the Python that is <code>color(8, 7)</code>, though the graph here always has a white background. <code>line(..., 6)</code> gives the marker its color, and the marker is also drawn dashed so it stands apart from the solid spectrum without relying on color. Try changing the phase <code>math.pi / 3</code> and notice that the peak stays the same height, or add a second term to <code>fnf</code>, such as <code>+ 1.5 * math.sin(3 * t)</code>, and look for its peak at <span class="math inline">\(3/(2\pi) \approx 0.477\)</span>.</p>
 <p>QBasic lets a <code>FUNCTION</code> be written at the end of the program, after the code that uses it. Python needs a function to be defined before it is called, so in the Python the <code>def</code> comes first, and <code>return</code> gives back the value that BASIC sets with <code>fnf = ...</code>. <code>SIN</code>, <code>COS</code>, <code>SQR</code>, and <code>ATN</code> become <code>math.sin</code>, <code>math.cos</code>, <code>math.sqrt</code>, and <code>math.atan</code>, and BASIC’s comment mark <code>'</code> becomes <code>#</code>.</p>
 <p>One subtlety in the original: QBasic keeps the variables inside a <code>FUNCTION</code> separate from the ones in the main program unless they are declared <code>SHARED</code>. So inside <code>fnf</code>, <code>pi</code> is a new variable that starts at 0, and the original really computes <span class="math inline">\(3\sin(7t)\)</span> with no phase shift. The Python uses the real π. Since the power spectrum doesn’t depend on the phase, the graph comes out the same either way.</p>
 <section id="notes-from-the-textbook" class="level2 page-columns page-full">
@@ -254,11 +254,11 @@ window.Quarto = {
   .sir-note { font-size: 0.85rem; color: #5b6573; margin-top: 0.5rem; }
   .sir-legend { display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; margin-top: 0.6rem; font-size: 0.8rem; color: #5b6573; font-variant-numeric: tabular-nums; }
   .sir-legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
-  .sir-legend i { display: inline-block; width: 1.4em; height: 0.6em; border-radius: 2px; border: 1px solid rgba(0, 0, 0, 0.25); }
+  .sir-legend svg { flex: none; }
   .sir-other { margin-top: 0.75rem; font-size: 0.85rem; background: #f7f8fa; border: 1px solid #e3e6ea; border-radius: 6px; padding: 0.6rem 0.8rem; white-space: pre-wrap; }
 
   /* ---------- graph ---------- */
-  .sir-chart { position: relative; border: 1px solid #d9dde3; border-radius: 6px; padding: 6px 4px 0; transition: opacity 0.2s; }
+  .sir-chart { position: relative; background: #fff; border: 1px solid #d9dde3; border-radius: 6px; padding: 6px 4px 0; transition: opacity 0.2s; }
   .sir-chart.stale { opacity: 0.45; }
   .sir-chart svg { width: 100%; height: auto; display: block; touch-action: pan-y; }
   .sir-chart text { font-size: 12px; fill: #5b6573; font-family: inherit; font-variant-numeric: tabular-nums; }
@@ -313,8 +313,9 @@ window.Quarto = {
   <section>
     <h2 class="anchored">Graph</h2>
     <p class="sir-hint">Each <code>line(...)</code> draws one straight segment, like BASIC's <code>LINE</code>;
-      an optional third number picks its color. <code>window(...)</code> sets the visible range, like <code>WINDOW</code>,
-      and <code>color(...)</code> sets the colors, like <code>COLOR</code>.
+      an optional third number picks its color, and each color also gets its own line pattern.
+      <code>window(...)</code> sets the visible range, like <code>WINDOW</code>,
+      and <code>color(...)</code> sets the drawing color, like <code>COLOR</code>. The background is always white.
       Hover over the graph to read coordinates.</p>
     <div class="sir-chart" id="sir-chart">
       <div class="sir-empty">Loading Python. The first run takes a few seconds.</div>
@@ -371,6 +372,7 @@ def fnf(t):
 
 # BASIC: COLOR 8, 7
 # Dark gray (8) foreground on a light gray (7) background.
+# On this page the graph background is always white, so the 7 is ignored.
 color(8, 7)
 
 # BASIC: WINDOW (0, -.5)-(3, 4)
@@ -501,6 +503,42 @@ const PALETTE_NAMES = ["black", "blue", "green", "cyan", "red", "magenta", "brow
                        "dark gray", "light blue", "light green", "light cyan", "light red", "light magenta",
                        "yellow", "white"];
 const DEFAULT_STROKE = "#1f5f99";
+
+// Each color also gets its own line pattern, in the order the colors first appear, so the
+// lines can be told apart without relying on color. Lengths assume round caps on a 2px line.
+const DASHES = [
+  ["solid", ""], ["dashed", "8 5"], ["dotted", "0.1 5"], ["dash-dot", "10 5 0.1 5"],
+  ["long dash", "18 6"], ["short dash", "4 5"], ["dash-dot-dot", "10 5 0.1 5 0.1 5"],
+  ["sparse dots", "0.1 9"], ["long-short", "18 5 5 5"], ["spaced dash", "8 10"],
+  ["dense dots", "0.1 3.5"], ["long dash-dot-dot", "18 5 0.1 5 0.1 5"],
+  ["extra-long dash", "28 7"], ["short dash-dot", "4 5 0.1 5"]
+];
+
+// Contrast ratio of a color against white (WCAG formula).
+function contrastWithWhite(hex) {
+  const lin = c => { c /= 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; };
+  const n = parseInt(hex.slice(1), 16);
+  const L = 0.2126 * lin(n >> 16) + 0.7152 * lin((n >> 8) & 255) + 0.0722 * lin(n & 255);
+  return 1.05 / (L + 0.05);
+}
+
+function lineStyle(key, index) {
+  const [name, dash] = DASHES[index % DASHES.length];
+  const color = key === "default" ? DEFAULT_STROKE : PALETTE[key];
+  // Light colors (light gray, yellow, white, ...) get a dark outline so they show up on white.
+  return { name, dash, color, outline: contrastWithWhite(color) < 3 };
+}
+
+function strokePath(d, st, extra = "", width = 2) {
+  const dash = st.dash ? ` stroke-dasharray="${st.dash}"` : "";
+  const common = `d="${d}" ${extra} fill="none" stroke-linecap="round" stroke-linejoin="round"${dash}`;
+  return (st.outline ? `<path ${common} stroke="#333" stroke-width="${width + 2}"/>` : "") +
+         `<path ${common} stroke="${st.color}" stroke-width="${width}"/>`;
+}
+
+function swatch(st) {
+  return `<svg width="44" height="10" aria-hidden="true">${strokePath("M4,5L40,5", st, "", 2.5)}</svg>`;
+}
 
 // ------------------------------------------------------------------
 // Editor: a transparent textarea over a syntax-highlighted <pre>.
@@ -810,8 +848,8 @@ function renderGraph(res) {
 
   let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Graph of ${segs.length} line segments">`;
   svg += `<defs><clipPath id="sir-clip"><rect x="${M.l}" y="${M.t}" width="${W - M.l - M.r}" height="${H - M.t - M.b}"/></clipPath></defs>`;
-  if (res.background !== null && res.background !== undefined)
-    svg += `<rect x="${M.l}" y="${M.t}" width="${W - M.l - M.r}" height="${H - M.t - M.b}" fill="${PALETTE[res.background]}"/>`;
+  // The plot area is always white, whatever background color(...) asks for.
+  svg += `<rect x="${M.l}" y="${M.t}" width="${W - M.l - M.r}" height="${H - M.t - M.b}" fill="#fff"/>`;
   for (const v of ticksWithin(y1, y2, 5)) {
     svg += `<line class="grid" x1="${M.l}" x2="${W - M.r}" y1="${f1(sy(v))}" y2="${f1(sy(v))}"/>`;
     svg += `<text x="${M.l - 8}" y="${f1(sy(v))}" dy="0.32em" text-anchor="end">${fmt.format(v)}</text>`;
@@ -823,21 +861,23 @@ function renderGraph(res) {
   svg += `<line class="axis" x1="${M.l}" x2="${M.l}" y1="${M.t}" y2="${H - M.b}"/>`;
   svg += `<line class="axis" x1="${M.l}" x2="${W - M.r}" y1="${H - M.b}" y2="${H - M.b}"/>`;
   // One path per color, drawn in the order the colors first appear, so later runs sit on top.
+  // A segment that starts where the last one ended continues the same line, so dash patterns
+  // run smoothly along a curve instead of restarting at every tiny segment.
   const groups = new Map();
   for (const s of segs) {
     const key = s[4] === null || s[4] === undefined ? "default" : s[4];
-    if (!groups.has(key)) groups.set(key, []);
-    groups.get(key).push(`M${f1(sx(s[0]))},${f1(sy(s[1]))}L${f1(sx(s[2]))},${f1(sy(s[3]))}`);
+    let g = groups.get(key);
+    if (!g) { g = { d: [], end: null, count: 0, style: lineStyle(key, groups.size) }; groups.set(key, g); }
+    const a = `${f1(sx(s[0]))},${f1(sy(s[1]))}`, b = `${f1(sx(s[2]))},${f1(sy(s[3]))}`;
+    g.d.push(g.end === a ? `L${b}` : `M${a}L${b}`);
+    g.end = b;
+    g.count++;
   }
-  for (const [key, parts] of groups) {
-    const stroke = key === "default" ? DEFAULT_STROKE : PALETTE[key];
-    svg += `<path d="${parts.join("")}" clip-path="url(#sir-clip)" fill="none" stroke="${stroke}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
-  }
+  for (const g of groups.values()) svg += strokePath(g.d.join(""), g.style, `clip-path="url(#sir-clip)"`);
   if (groups.size > 1 || !groups.has("default")) {
-    legendEl.innerHTML = [...groups].map(([key, parts]) => {
+    legendEl.innerHTML = [...groups].map(([key, g]) => {
       const name = key === "default" ? "no color given" : `color ${key} (${PALETTE_NAMES[key]})`;
-      const stroke = key === "default" ? DEFAULT_STROKE : PALETTE[key];
-      return `<span><i style="background:${stroke}"></i>${name}: ${parts.length.toLocaleString("en-US")} segment${parts.length === 1 ? "" : "s"}</span>`;
+      return `<span>${swatch(g.style)}${name}, ${g.style.name}: ${g.count.toLocaleString("en-US")} segment${g.count === 1 ? "" : "s"}</span>`;
     }).join("");
   }
   svg += `<line class="hover-rule" y1="${M.t}" y2="${H - M.b}" style="display:none"/>`;
@@ -870,7 +910,7 @@ startWorker();
 </script>
 
 
-<nav class="app-nav app-nav-bottom" aria-label="App navigation"><a class="app-nav-link app-nav-prev" href="15-detector.html"><span class="app-nav-label">← Previous</span><span class="app-nav-title">DETECTOR</span></a><a class="app-nav-home" href="../index.html">All apps</a><span></span></nav>
+<nav class="app-nav app-nav-bottom" aria-label="App navigation"><a class="app-nav-link app-nav-prev" href="15-detector.html"><span class="app-nav-label">← Previous</span><span class="app-nav-title">DETECTOR</span></a><a class="app-nav-home" href="../index.html">All apps</a><a class="app-nav-link app-nav-next" href="python-basics.html"><span class="app-nav-label">Next →</span><span class="app-nav-title">Python basics</span></a></nav>
 </section>
 
 </main> <!-- /main -->
@@ -1275,6 +1315,19 @@ startWorker();
   });
   </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Programs adapted from <em>Calculus in Context: The Five College Calculus Project</em> (Callahan, Cox, Hoffman, O’Shea, Pollatsek &amp; Senechal; W. H. Freeman, 1995), rewritten from QBasic into Python to run in your browser.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
 
 
 

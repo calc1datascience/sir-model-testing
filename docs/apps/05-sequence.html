@@ -178,8 +178,8 @@ window.Quarto = {
 y' = 0.1\, y \left(1 - \frac{y}{1000}\right), \qquad y(0) = 100,
 \]</span></p>
 <p>solved with Euler’s method from t = 0 to t = 75. The inner loop, <code>FOR k = 1 TO numberofsteps</code>, is Euler’s method itself, the same pattern as SIRPLOT but with one variable instead of three. The outer loop, <code>FOR j = 1 TO 14</code>, runs that whole calculation again and again. Each time through, <code>numberofsteps = 2 ^ (j - 1)</code> doubles the number of steps (1, 2, 4, …, 8192), so <code>deltat</code> is cut in half. The first approximation is a single straight segment; the last one has 8192 segments, each less than a hundredth of a day long. Watching the graphs settle down onto one curve is what it means for the sequence of approximations to converge to the solution.</p>
-<p>Two pieces of BASIC are new here. <code>LINE (t, y)-(t + deltat, y + deltay), j</code> has a fourth argument, a color number, so approximation number j is drawn in color j. <code>COLOR 8, 7</code> sets the foreground to color 8 (dark gray) and the background to color 7 (light gray). (<code>SCREEN 9</code> switches to an older color graphics mode.) One quirk of the original carries over: approximation 7 is drawn in color 7, the same light gray as the background, so it is invisible. Try changing the background in <code>color(8, 7)</code> to 15 (white) or 0 (black) to see it.</p>
-<p>In the Python, <code>line(..., j)</code> and <code>color(8, 7)</code> do the same jobs, using the same sixteen color numbers as QBasic; the legend under the graph shows which color goes with which approximation and how many segments it has. BASIC’s <code>^</code> for powers is <code>**</code> in Python. Try changing <code>range(1, 15)</code> to <code>range(1, 6)</code> to see just the first few approximations, or change <code>tfinal</code> and the window to look at the long-run behavior.</p>
+<p>Two pieces of BASIC are new here. <code>LINE (t, y)-(t + deltat, y + deltay), j</code> has a fourth argument, a color number, so approximation number j is drawn in color j. <code>COLOR 8, 7</code> sets the foreground to color 8 (dark gray) and the background to color 7 (light gray). (<code>SCREEN 9</code> switches to an older color graphics mode.) In the original, approximation 7 is drawn in color 7, the same light gray as the background, so it is invisible. On this page the graph background is always white, so every approximation shows up.</p>
+<p>In the Python, <code>line(..., j)</code> and <code>color(8, 7)</code> do the same jobs, using the same sixteen color numbers as QBasic. So that the approximations can be told apart without relying on color, each one is also drawn with its own line pattern (solid, dashed, dotted, and so on), and the lightest colors get a dark outline. The legend under the graph shows the color and pattern of each approximation and how many segments it has. BASIC’s <code>^</code> for powers is <code>**</code> in Python. Try changing <code>range(1, 15)</code> to <code>range(1, 6)</code> to see just the first few approximations, or change <code>tfinal</code> and the window to look at the long-run behavior.</p>
 <section id="notes-from-the-textbook" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="notes-from-the-textbook">Notes from the textbook</h2>
 <!-- Write your notes from the textbook below, in ordinary Markdown,
@@ -230,11 +230,11 @@ y' = 0.1\, y \left(1 - \frac{y}{1000}\right), \qquad y(0) = 100,
   .sir-note { font-size: 0.85rem; color: #5b6573; margin-top: 0.5rem; }
   .sir-legend { display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; margin-top: 0.6rem; font-size: 0.8rem; color: #5b6573; font-variant-numeric: tabular-nums; }
   .sir-legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
-  .sir-legend i { display: inline-block; width: 1.4em; height: 0.6em; border-radius: 2px; border: 1px solid rgba(0, 0, 0, 0.25); }
+  .sir-legend svg { flex: none; }
   .sir-other { margin-top: 0.75rem; font-size: 0.85rem; background: #f7f8fa; border: 1px solid #e3e6ea; border-radius: 6px; padding: 0.6rem 0.8rem; white-space: pre-wrap; }
 
   /* ---------- graph ---------- */
-  .sir-chart { position: relative; border: 1px solid #d9dde3; border-radius: 6px; padding: 6px 4px 0; transition: opacity 0.2s; }
+  .sir-chart { position: relative; background: #fff; border: 1px solid #d9dde3; border-radius: 6px; padding: 6px 4px 0; transition: opacity 0.2s; }
   .sir-chart.stale { opacity: 0.45; }
   .sir-chart svg { width: 100%; height: auto; display: block; touch-action: pan-y; }
   .sir-chart text { font-size: 12px; fill: #5b6573; font-family: inherit; font-variant-numeric: tabular-nums; }
@@ -289,8 +289,9 @@ y' = 0.1\, y \left(1 - \frac{y}{1000}\right), \qquad y(0) = 100,
   <section>
     <h2 class="anchored">Graph</h2>
     <p class="sir-hint">Each <code>line(...)</code> draws one straight segment, like BASIC's <code>LINE</code>;
-      an optional third number picks its color. <code>window(...)</code> sets the visible range, like <code>WINDOW</code>,
-      and <code>color(...)</code> sets the colors, like <code>COLOR</code>.
+      an optional third number picks its color, and each color also gets its own line pattern.
+      <code>window(...)</code> sets the visible range, like <code>WINDOW</code>,
+      and <code>color(...)</code> sets the drawing color, like <code>COLOR</code>. The background is always white.
       Hover over the graph to read coordinates.</p>
     <div class="sir-chart" id="sir-chart">
       <div class="sir-empty">Loading Python. The first run takes a few seconds.</div>
@@ -334,6 +335,7 @@ const ORIGINAL = `# BASIC: DEFDBL A-Z makes every variable double precision.
 
 # BASIC: COLOR 8, 7
 # Dark gray (8) foreground on a light gray (7) background.
+# On this page the graph background is always white, so the 7 is ignored.
 color(8, 7)
 
 # BASIC: WINDOW (0, 0)-(75, 1300)
@@ -446,6 +448,42 @@ const PALETTE_NAMES = ["black", "blue", "green", "cyan", "red", "magenta", "brow
                        "dark gray", "light blue", "light green", "light cyan", "light red", "light magenta",
                        "yellow", "white"];
 const DEFAULT_STROKE = "#1f5f99";
+
+// Each color also gets its own line pattern, in the order the colors first appear, so the
+// lines can be told apart without relying on color. Lengths assume round caps on a 2px line.
+const DASHES = [
+  ["solid", ""], ["dashed", "8 5"], ["dotted", "0.1 5"], ["dash-dot", "10 5 0.1 5"],
+  ["long dash", "18 6"], ["short dash", "4 5"], ["dash-dot-dot", "10 5 0.1 5 0.1 5"],
+  ["sparse dots", "0.1 9"], ["long-short", "18 5 5 5"], ["spaced dash", "8 10"],
+  ["dense dots", "0.1 3.5"], ["long dash-dot-dot", "18 5 0.1 5 0.1 5"],
+  ["extra-long dash", "28 7"], ["short dash-dot", "4 5 0.1 5"]
+];
+
+// Contrast ratio of a color against white (WCAG formula).
+function contrastWithWhite(hex) {
+  const lin = c => { c /= 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; };
+  const n = parseInt(hex.slice(1), 16);
+  const L = 0.2126 * lin(n >> 16) + 0.7152 * lin((n >> 8) & 255) + 0.0722 * lin(n & 255);
+  return 1.05 / (L + 0.05);
+}
+
+function lineStyle(key, index) {
+  const [name, dash] = DASHES[index % DASHES.length];
+  const color = key === "default" ? DEFAULT_STROKE : PALETTE[key];
+  // Light colors (light gray, yellow, white, ...) get a dark outline so they show up on white.
+  return { name, dash, color, outline: contrastWithWhite(color) < 3 };
+}
+
+function strokePath(d, st, extra = "", width = 2) {
+  const dash = st.dash ? ` stroke-dasharray="${st.dash}"` : "";
+  const common = `d="${d}" ${extra} fill="none" stroke-linecap="round" stroke-linejoin="round"${dash}`;
+  return (st.outline ? `<path ${common} stroke="#333" stroke-width="${width + 2}"/>` : "") +
+         `<path ${common} stroke="${st.color}" stroke-width="${width}"/>`;
+}
+
+function swatch(st) {
+  return `<svg width="44" height="10" aria-hidden="true">${strokePath("M4,5L40,5", st, "", 2.5)}</svg>`;
+}
 
 // ------------------------------------------------------------------
 // Editor: a transparent textarea over a syntax-highlighted <pre>.
@@ -755,8 +793,8 @@ function renderGraph(res) {
 
   let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Graph of ${segs.length} line segments">`;
   svg += `<defs><clipPath id="sir-clip"><rect x="${M.l}" y="${M.t}" width="${W - M.l - M.r}" height="${H - M.t - M.b}"/></clipPath></defs>`;
-  if (res.background !== null && res.background !== undefined)
-    svg += `<rect x="${M.l}" y="${M.t}" width="${W - M.l - M.r}" height="${H - M.t - M.b}" fill="${PALETTE[res.background]}"/>`;
+  // The plot area is always white, whatever background color(...) asks for.
+  svg += `<rect x="${M.l}" y="${M.t}" width="${W - M.l - M.r}" height="${H - M.t - M.b}" fill="#fff"/>`;
   for (const v of ticksWithin(y1, y2, 5)) {
     svg += `<line class="grid" x1="${M.l}" x2="${W - M.r}" y1="${f1(sy(v))}" y2="${f1(sy(v))}"/>`;
     svg += `<text x="${M.l - 8}" y="${f1(sy(v))}" dy="0.32em" text-anchor="end">${fmt.format(v)}</text>`;
@@ -768,21 +806,23 @@ function renderGraph(res) {
   svg += `<line class="axis" x1="${M.l}" x2="${M.l}" y1="${M.t}" y2="${H - M.b}"/>`;
   svg += `<line class="axis" x1="${M.l}" x2="${W - M.r}" y1="${H - M.b}" y2="${H - M.b}"/>`;
   // One path per color, drawn in the order the colors first appear, so later runs sit on top.
+  // A segment that starts where the last one ended continues the same line, so dash patterns
+  // run smoothly along a curve instead of restarting at every tiny segment.
   const groups = new Map();
   for (const s of segs) {
     const key = s[4] === null || s[4] === undefined ? "default" : s[4];
-    if (!groups.has(key)) groups.set(key, []);
-    groups.get(key).push(`M${f1(sx(s[0]))},${f1(sy(s[1]))}L${f1(sx(s[2]))},${f1(sy(s[3]))}`);
+    let g = groups.get(key);
+    if (!g) { g = { d: [], end: null, count: 0, style: lineStyle(key, groups.size) }; groups.set(key, g); }
+    const a = `${f1(sx(s[0]))},${f1(sy(s[1]))}`, b = `${f1(sx(s[2]))},${f1(sy(s[3]))}`;
+    g.d.push(g.end === a ? `L${b}` : `M${a}L${b}`);
+    g.end = b;
+    g.count++;
   }
-  for (const [key, parts] of groups) {
-    const stroke = key === "default" ? DEFAULT_STROKE : PALETTE[key];
-    svg += `<path d="${parts.join("")}" clip-path="url(#sir-clip)" fill="none" stroke="${stroke}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
-  }
+  for (const g of groups.values()) svg += strokePath(g.d.join(""), g.style, `clip-path="url(#sir-clip)"`);
   if (groups.size > 1 || !groups.has("default")) {
-    legendEl.innerHTML = [...groups].map(([key, parts]) => {
+    legendEl.innerHTML = [...groups].map(([key, g]) => {
       const name = key === "default" ? "no color given" : `color ${key} (${PALETTE_NAMES[key]})`;
-      const stroke = key === "default" ? DEFAULT_STROKE : PALETTE[key];
-      return `<span><i style="background:${stroke}"></i>${name}: ${parts.length.toLocaleString("en-US")} segment${parts.length === 1 ? "" : "s"}</span>`;
+      return `<span>${swatch(g.style)}${name}, ${g.style.name}: ${g.count.toLocaleString("en-US")} segment${g.count === 1 ? "" : "s"}</span>`;
     }).join("");
   }
   svg += `<line class="hover-rule" y1="${M.t}" y2="${H - M.b}" style="display:none"/>`;
@@ -1220,6 +1260,19 @@ startWorker();
   });
   </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Programs adapted from <em>Calculus in Context: The Five College Calculus Project</em> (Callahan, Cox, Hoffman, O’Shea, Pollatsek &amp; Senechal; W. H. Freeman, 1995), rewritten from QBasic into Python to run in your browser.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
 
 
 

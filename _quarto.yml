@@ -11,6 +11,11 @@ website:
     left:
       - href: index.qmd
         text: All apps
+  page-footer:
+    center: >
+      Programs adapted from *Calculus in Context: The Five College Calculus Project*
+      (Callahan, Cox, Hoffman, O'Shea, Pollatsek & Senechal; W. H. Freeman, 1995),
+      rewritten from QBasic into Python to run in your browser.
 
 format:
   html:
@@ -19,6 +24,14 @@ format:
 
 filters:
   - _app-nav.lua
+
+navbar:
+  left:
+    - href: index.qmd
+      text: All apps
+    - href: python-basics.qmd
+      text: Python basics
+
 
 comments:
   hypothesis: true
